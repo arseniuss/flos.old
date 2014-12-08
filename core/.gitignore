@@ -4,3 +4,5 @@ mnt
 kernel.elf
 config.mk
 tmp-*
+nbproject/private
+*.elf
