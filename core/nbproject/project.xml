@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.cnd.makeproject</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/make-project/1">
+            <name>flos core</name>
+            <c-extensions>c</c-extensions>
+            <cpp-extensions/>
+            <header-extensions>h</header-extensions>
+            <sourceEncoding>UTF-8</sourceEncoding>
+            <make-dep-projects/>
+            <sourceRootList>
+                <sourceRootElem>.</sourceRootElem>
+            </sourceRootList>
+            <confList>
+                <confElem>
+                    <name>x86</name>
+                    <type>0</type>
+                </confElem>
+                <confElem>
+                    <name>x86_64</name>
+                    <type>0</type>
+                </confElem>
+            </confList>
+            <formatting>
+                <project-formatting-style>true</project-formatting-style>
+                <c-style>Default_0|Arseniuss</c-style>
+                <cpp-style>Default_1|Arseniuss</cpp-style>
+                <header-style>Default_2|Arseniuss</header-style>
+            </formatting>
+        </data>
+    </configuration>
+</project>

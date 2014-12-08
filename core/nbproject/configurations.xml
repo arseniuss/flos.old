@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="arch">
+        <df name="x86">
+          <df name="include">
+            <df name="flos">
+              <df name="mem">
+                <in>paging.h</in>
+              </df>
+              <in>config.h</in>
+            </df>
+          </df>
+          <df name="init">
+            <in>kmain.c</in>
+          </df>
+          <in>sources.mk</in>
+        </df>
+      </df>
+      <df name="debug">
+        <in>sources.mk</in>
+      </df>
+      <df name="drivers">
+        <in>sources.mk</in>
+      </df>
+      <df name="include">
+        <df name="flos">
+          <in>types.h</in>
+        </df>
+        <in>multiboot.h</in>
+      </df>
+      <in>sources.mk</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>makefile</projectmakefile>
+  <confs>
+    <conf name="x86" type="0">
+      <toolsSet>
+        <compilerSet>GCC_CC_i386|GNU</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE}</buildCommand>
+          <cleanCommand>${MAKE} clean</cleanCommand>
+          <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem>include</pElem>
+              <pElem>arch/x86</pElem>
+              <pElem>.</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>__32__=1</Elem>
+              <Elem>__KERNEL__=1</Elem>
+              <Elem>__MULTIBOOT__=1</Elem>
+              <Elem>__x86__=1</Elem>
+            </preprocessorList>
+          </cTool>
+        </makeTool>
+      </makefileType>
+      <item path="arch/x86/include/flos/config.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="arch/x86/include/flos/mem/paging.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="arch/x86/init/kmain.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+    <conf name="x86_64" type="0">
+      <toolsSet>
+        <compilerSet>GCC_CC_x86_84|GNU</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE}</buildCommand>
+          <cleanCommand>${MAKE} clean</cleanCommand>
+          <executablePath></executablePath>
+        </makeTool>
+      </makefileType>
+      <item path="arch/x86/include/flos/config.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="arch/x86/include/flos/mem/paging.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="arch/x86/init/kmain.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="arch/x86/sources.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="debug/sources.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="drivers/sources.mk" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/flos/types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/multiboot.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="sources.mk" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

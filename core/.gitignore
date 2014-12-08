@@ -1,0 +1,6 @@
+bootgrub.gz
+*.img
+mnt
+kernel.elf
+config.mk
+tmp-*
