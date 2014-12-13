@@ -79,7 +79,7 @@
 /* Is there video information? */
 #    define MULTIBOOT_INFO_VIDEO_INFO               0x00000800
 
-#    ifndef __ASSEMBLER__
+#    ifndef __PREPROCESSING__
 
 #        include <flos/types.h>
 
@@ -218,6 +218,7 @@ struct multiboot_mod_list {
 };
 typedef struct multiboot_mod_list multiboot_module_t;
 
-#    endif /* ! __ASSEMBLER__ */
+#    endif /* ! __PREPROCESSING__ */
 
 #endif /* !__flos__MULTIBOOT_H__ */
+

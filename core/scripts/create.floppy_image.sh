@@ -11,7 +11,7 @@
 #*
 
 # Exit if any error
-set -e
+#set -e
 
 if [ ! -f floppy.img ]; then
     # Getting floppy image file with GRUB installed
@@ -30,6 +30,7 @@ mkdir -p mnt/floppy
 sudo mount -o loop,umask=000 floppy.img mnt/floppy
 echo "title flos operating system
         root (fd0)
-        kernel /kernel.elf" > mnt/floppy/boot/grub/menu.lst
-cp kernel.elf mnt/floppy
+        kernel /kernel" > mnt/floppy/boot/grub/menu.lst
+rm -f mnt/floppy/kernel
+cp kernel.x86.elf mnt/floppy/kernel
 sudo umount mnt/floppy

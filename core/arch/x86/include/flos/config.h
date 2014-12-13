@@ -11,6 +11,144 @@
 #ifndef __flos_x86__config_h__
 #    define __flos_x86__config_h__
 
-#    define KERNEL_VIRTUAL_BASE                     0xF0000000
+/*
+ * Virtual Memory Map:
+ *
+ *      4 GB            +-------------------------------------------+
+ *                      |                                           |
+ *                      |           (kernel modules)                |
+ *                      |                                           |
+ * KERNEL_MODULES_START +-------------------------------------------+ v + ?
+ *                      |                                           |
+ * KERNEL_STACK_START   +-------------------------------------------+ v + 4 MB
+ *                      | __kernel_bss_end = .                      |
+ *                      | SECTION .bss                              |
+ *                      | __kernel_bss_start__ = .                  |
+ *                      |            v grows down v                 |
+ *                      |                                           |
+ *                      |                   ...                     |
+ *                      |                                           |
+ *                      |             ^ grows up ^                  |
+ *                      | __kernel_data_end__ = .                   |
+ *                      | SECTION .data                             |
+ *                      | SECTION .kmodules - internal modules      |
+ *                      | __kernel_data_start__ = .                 |
+ *                      |                                           |
+ *                      | __kernel_rodata_end__ = .                 |
+ *                      | SECTION .idt - kernel IDT                 |
+ *                      | SECTION .ksym - kernel symbol list        |
+ *                      | SECTION .rodata                           |
+ *                      | __kernel_rodata_start__ = .               |
+ *                      |                                           |
+ *                      | __kernel_text_end__ = .                   |
+ *                      | SECTION .text                             |
+ *                      | __kernel_text_start__ = .                 |
+ * KERNEL_CODE_START    +-------------------------------------------+ 0xF0400000
+ *                      |                                           |
+ *                      |    (reserved for kernel page structs)     |
+ *                      |                                           |
+ *            + 1Mbytes +-------------------------------------------+ 0xF0100000
+ *                      |                                           |
+ *                      |              (reserved)                   |
+ *                      |                                           |
+ * KERNEL_VIRTUAL_BASE  +-------------------------------------------+ 0xF0000000
+ *                      |                                           |
+ *                      |                 . . .                     |
+ *                      |                                           |
+ *                      +-------------------------------------------+
+ *                      |                                           |
+ *                      |       (unallocated protection page)       |
+ *                      |                                           |
+ * USER_STACK_START     +-------------------------------------------+ ^- 4 KB
+ *         page_aligned | SECTION .bss                              |
+ *                      |                v grows down v             |
+ *                      |                                           |
+ *                      |       (unallocated reserved pages)        |
+ *                      |                                           |
+ *                      |                 ^ grows up ^              |
+ *         page_aligned | SECTION .data                             |
+ *                      |                                           |
+ *         page_aligned | SECTION .rodata                           |
+ *                      |                                           |
+ *                      | SECTION .text                             |
+ * USER_VIRTUAL_START   +-------------------------------------------+ 0x00800000
+ *                      |                 (reserved)                |
+ *                      +-------------------------------------------+
+ *
+ */
+
+/** Kernel is loaded at 4 MB mark in physical memory */
+#    define KERNEL_PHYSICAL_BASE    0x00400000
+
+/** All virtual addresses above this is reserved for kernel */
+#    define KERNEL_VIRTUAL_BASE     0xF0000000
+
+#    define KERNEL_CODE_START       (KERNEL_VIRTUAL_BASE + KERNEL_PHYSICAL_BASE)
+
+/* TODO: if kernel grows in size this must be changed */
+#    define KERNEL_STACK_START      (KERNEL_CODE_START + 0x00400000)
+
+#    define USER_VIRTUAL_START      0x00800000
+
+/*
+ * Global Descriptor Table:
+ *
+ *
+ * Null segment             +---------------------------------------+
+ *                          |                                       |
+ * Kernel code segment      +---------------------------------------+
+ *                          |                                       |
+ * Kernel data segment      +---------------------------------------+
+ *                          |                                       |
+ * User code segment        +---------------------------------------+
+ *                          |                                       |
+ * User data segment        +---------------------------------------+
+ *                          |                                       |
+ * Ring0-ring3 switch TSS   +---------------------------------------+
+ *                          |                                       |
+ * Kernel call gate         +---------------------------------------+
+ *                          |                                       |
+ * Kernel double fault TSS  +---------------------------------------+
+ *                          |                                       |
+ *                          +---------------------------------------+
+ *
+ */
+
+/** Size of segmentation structure entry in bytes */
+#    define SEGMENT_ENTRY_SIZE      8
+
+/** Count of used segments */
+#    define SEGMENT_COUNT           8
+
+/** Size of segmentation structure */
+#    define SEGMENT_SIZE            (SEGMENT_ENTRY_SIZE * SEGMENT_COUNT)
+
+/** Global Descriptor Table's kernel code segment number */
+#    define GDT_KERNEL_CS               1
+/** Global Descriptor Table's kernel data segment number */
+#    define GDT_KERNEL_DS               2
+/** Global Descriptor Table's user code segment number */
+#    define GDT_CS                      3
+/** Global Descriptor Table's user data segment number */
+#    define GDT_DS                      4
+/** Task Gate for Ring0 to Ring3 switches */
+#    define GDT_TSS_3                   5
+/** Call Gate for far calls */
+#    define GDT_SEGSYSCALL              6
+/** Task Gate for Double Faults */
+#    define GDT_TSS_DF                  7
+
+/** Segmentation structure's offsets @{ */
+#    define KERNEL_CS                   (GDT_KERNEL_CS * SEGMENT_ENTRY_SIZE)
+#    define KERNEL_DS                   (GDT_KERNEL_DS * SEGMENT_ENTRY_SIZE)
+#    define USER_CS                     (GDT_CS * SEGMENT_ENTRY_SIZE)
+#    define USER_DS                     (GDT_DS * SEGMENT_ENTRY_SIZE)
+#    define TSS_3                       (GDT_TSS_3 * SEGMENT_ENTRY_SIZE)
+#    define SEGSYSCALL                  (GDT_SEGSYSCALL * SEGMENT_ENTRY_SIZE)
+#    define TSS_DF                      (GDT_TSS_DF * SEGMENT_ENTRY_SIZE)
+/** @} */
+
+/** Interrupt count */
+#    define INTERRUPT_COUNT             256
 
 #endif /* __flos_x86__config_h__ */

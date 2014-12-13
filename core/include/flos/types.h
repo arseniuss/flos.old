@@ -94,7 +94,7 @@ typedef signed long s32;
  * @typedef s64
  * @short signed 16bit int type
  */
-/** @todo: 32bit systems do not use 64bit integers (?) */
+/** TODO: 32bit systems do not use 64bit integers (?) */
 #    if __SIZEOF_LONG__ == 8
 typedef unsigned long u64;
 typedef signed long s64;

@@ -71,6 +71,8 @@ PPFLAGS = $(INCLUDES) $(DEFINES)
 	FLAGS += -fno-exceptions -fno-asynchronous-unwind-tables
 	# Do not use run-time type identification features
 	CPPFLAGS += -fno-rtti
+	# Adding debugging symbols
+	FLAGS += -g
 	
 CFLAGS += $(FLAGS)
 CPPFLAGS += $(FLAGS)
