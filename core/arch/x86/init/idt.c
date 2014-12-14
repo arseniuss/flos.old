@@ -59,6 +59,8 @@ char *exception_messages[] = {
 };
 
 int init_idt() {
+    kinfof("Initing interrupts ... ");
+    
     pic_remap(0x20, 0x28);
 
     idt_ptr.limit = sizeof (struct gate_desc) * INTERRUPT_COUNT - 1;
@@ -72,12 +74,14 @@ int init_idt() {
 
     flush_idt(&idt_ptr);
     __asm("sti");
+    
+    kinfof(" OK\n");
 
     return 0;
 }
 
 struct iregs * irq_handler(struct iregs * regs) {
-    kprintf("IRQ");
+    kprintf("IRQ %d\n", regs->int_no);
 
     return regs;
 }

@@ -166,5 +166,7 @@ static inline void pop_interrupts(volatile u32 * volatile buff) {
 extern struct gate_desc kernel_idt[];
 extern struct seg_ptr kernel_idt_ptr;
 
+__linkage int init_idt();
+
 #    endif /* __PREPROCESSING__ */
 #endif /* __flos_x86__DESCRIPTORS_H__ */
