@@ -29,6 +29,7 @@ static inline int kprintf_get_level(const char *buffer) {
     if(buffer[0] == KERN_SOH_ASCII && buffer[1]) {
         switch(buffer[1]) {
             case '0' ... '7':
+            case 'd':
                 return buffer[1];
         }
     }
@@ -43,6 +44,7 @@ static inline const char *kprintf_skip_level(const char *buffer) {
     return buffer;
 }
 
+__linkage int early_kprintf(const char *str);
 __linkage int kprintf(const char *fmt, ...);
 
 #    define kemergf(fmt, ...) \

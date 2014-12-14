@@ -10,6 +10,11 @@
 #* @copyright see file LICENSE
 #*
 
+KERNEL_MAJOR = 0
+KERNEL_MINOR = 1
+KERNEL_PATCH = 0
+KERNEL_NAME = "Cetraria Islandica"
+
 includes = include
 sources = 
 defines = KERNEL
@@ -42,7 +47,7 @@ endif
 
 config := $(shell echo $(config) | tr 'a-z' 'A-Z')
 DEFINES += $(addsuffix =1,$(addprefix CONFIG_,$(config)))
-defines += $(arch) $(platform) $(features) 
+defines += $(arch) $(platform) $(features)
 
 # Temporary directory
 TMP = tmp-$(arch)
@@ -52,7 +57,9 @@ TARGET = kernel.$(arch).elf
 # Reforming lists
 INCLUDES    := $(addprefix -I,$(includes))
 DEFINES	    := $(addprefix -D__,$(addsuffix __=1,$(defines))) \
-    		   $(addprefix -D,$(DEFINES))
+    $(addprefix -D,$(DEFINES)) \
+    -DKERNEL_MAJOR=$(KERNEL_MAJOR) -DKERNEL_MINOR=$(KERNEL_MINOR) \
+    -DKERNEL_PATCH=$(KERNEL_PATCH) -DKERNEL_NAME=\"$(KERNEL_NAME)\"
 
 CFLAGS = $(INCLUDES) $(DEFINES)
 CPPFLAGS = $(INCLUDES) $(DEFINES)
@@ -114,7 +121,8 @@ $(TARGET): $(objects)
 	@ /bin/echo -e "\t LD $(TARGET)  $(RED)"
 	@ mkdir -p $(TMP)/arch/$(arch)
 	@ $(PP) $(PPFLAGS) -P arch/$(arch)/linker.ld > $(TMP)/arch/$(arch)/linker.ld
-	@ $(LD) $(LDFLAGS) -T $(TMP)/arch/$(arch)/linker.ld -o $@ $(objects)
+	@ $(LD) $(LDFLAGS) -T $(TMP)/arch/$(arch)/linker.ld -o $@ $(objects) \
+	$(shell $(CC) -print-libgcc-file-name)
 	@ $(DUMP) $(DUMPFLAGS) $@ > $(TMP)/$@.dump
 	@ /bin/echo -e -n "$(OK)"
 	

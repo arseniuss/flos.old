@@ -11,6 +11,8 @@
 #ifndef __flos__DEFS_H__
 #    define __flos__DEFS_H__
 
+#    include <gcc/compiler.h>
+
 /** Align structure */
 #    define __align(x)              __attribute__((aligned(x)))
 /** Force inlining */

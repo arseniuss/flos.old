@@ -10,21 +10,21 @@
 
 #include <flos/arch/io.h>
 #include <flos/types.h>
-
-#include "../log.h"
+#include <flos/kprintf.h>
 
 #define COM1PORT            0x3F8
 
 const char *sh_color[] = {
-                          "\e[0m", ///< OK
-                          "\e[32m", ///< INFO
-                          "\e[33m", ///< WARN
+                          "\e[1\e[31m", ///< ENERG
+                          "\e[31m", ///< ALERT
+                          "\e[91m", ///< CRIT
                           "\e[31m", ///< ERR
-                          "\e[31m" ///< PANIC
+                          "\e[33m", ///< WARN
+                          "\e[92m", ///< NOTICE
+                          "\e[32m", ///< INFO
+                          "\e[94m", ///< DEBUG
 };
 int sh_colors = {sizeof (sh_color) / sizeof (sh_color[0])};
-
-int serial_puts(const char *s);
 
 /**
  * Checks of serial port if free to write
@@ -37,30 +37,34 @@ static bool serial_isempty(u16 port) {
 void serial_putc(char ch) {
 #ifdef CONFIG_BOCHS
     /* If we emulate in Bochs, use E9 hack. */
-    outb(BOCHS_PORT, ch);
+    outb(0xE9, ch);
 #endif
 
     while(serial_isempty(COM1PORT) == 0);
     outb(COM1PORT, ch);
 }
 
-static void change_color(unsigned char no) {
+static void change_color(int no) {
     for(const char *s = sh_color[no]; *s; s++)
         serial_putc(*s);
 }
 
-int serial_puts(const char *s) {
+static void clear_color() {
+    const char *s = "\e[0m";
+
+    for(; *s; s++)
+        serial_putc(*s);
+}
+
+int serial_puts(int level, const char *s) {
     int len = 0;
 
+    change_color(level);
+
     for(; *s; s++, len++) {
-        if(*s < sh_colors) {
-            change_color(*s);
-        } else
-            serial_putc(*s);
+        serial_putc(*s);
     }
-    change_color(0);
+    clear_color();
 
     return len;
 }
-
-log_puts_t *kernel_log_handle = &serial_puts;

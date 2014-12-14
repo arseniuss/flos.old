@@ -13,8 +13,5 @@ sources +=  \
 
 ifneq (,$(findstring SERIALLOG,$(features)))
     sources += debug/log/serial.c
-endif
-
-ifneq (,$(findstring bochs,$(config)))
-    DEFINES += BOCHS_PORT=0xE9
+    DEFINES += KLOG=serial_puts
 endif

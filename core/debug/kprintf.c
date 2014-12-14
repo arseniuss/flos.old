@@ -13,23 +13,44 @@
 #include <flos/string.h>
 #include <flos/vaargs.h>
 
-#include "log.h"
+#ifndef KLOG
+#    error "Kernel logging function is not defined!"
+#endif
 
-log_puts_t *kernel_log_handle;
+extern int KLOG(int level, const char *buf);
+
+int count = 0;
+
+__linkage int early_kprintf(const char *str) {
+    volatile char *video = (volatile char *) 0xB8000 + count * 2;
+
+    while(*str) {
+        *video++ = *str++;
+        *video++ = 0x7;
+        count++;
+    }
+
+    return 0;
+}
 
 __linkage int kprintf(const char *fmt, ...) {
     va_list args;
     int len;
     static char buf[MAX_CHAR_BUF_LEN];
-    
-    if(!kernel_log_handle)
-        return 0;
-    
+    const char *text = buf;
+    static int level;
+
     va_start(args, fmt);
     len = vsnprintf(buf, MAX_CHAR_BUF_LEN, fmt, args);
     va_end(args);
-    
-    kernel_log_handle(buf);
-    
+
+    int kern_level = kprintf_get_level(buf);
+    if(kern_level) {
+        text = kprintf_skip_level(buf);
+        level = kern_level - '0';
+    }
+
+    KLOG(level, text);
+
     return len;
 }

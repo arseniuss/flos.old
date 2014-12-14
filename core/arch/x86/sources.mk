@@ -14,5 +14,7 @@ includes += arch/x86/include
 
 sources += \
 	arch/x86/init/entry.S \
+	arch/x86/init/idt.S \
+	arch/x86/init/idt.c \
 	arch/x86/init/kmain.c
 

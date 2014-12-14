@@ -1,5 +1,5 @@
 /**
- * @file    arch/x86/init/entry.asmx
+ * @file    arch/x86/init/entry.S
  * @brief   x86 entry point
  * @version 1.0
  * @date    27.11.2014.
@@ -10,6 +10,7 @@
 
 #define __PREPROCESSING__ 1
 
+#include <flos/arch/registers.h>
 #include <flos/config.h>
 
 #ifdef __MULTIBOOT__
@@ -61,7 +62,7 @@ _start:
 
     /* Enable page size extenstions (4MB pages) */
     mov ecx, cr4
-    or ecx, 0x10 ;CR4_PSE
+    or ecx, CR4_PSE
     mov cr4, ecx
 
     /* Map kernel pages */
@@ -112,7 +113,7 @@ _start:
 
     /* Enable paging */
     mov ecx, cr0
-    or ecx, 0x80000000 ;CR0_PG
+    or ecx, CR0_PG
     mov cr0, ecx
 
 /* Change selectors */
