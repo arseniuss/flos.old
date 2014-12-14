@@ -24,6 +24,8 @@ ifeq ($(arch),)
     $(error Architecture is not specified)
 endif
 
+CONFIG = $(addprefix CONFIG_,$(config))
+
 include sources.mk
 
 AR ?= ar
@@ -38,7 +40,9 @@ ifneq ($(notdir $(ASM)),nasm)
     $(error $(notdir $(ASM)) assembler is not supported. Use nasm assembler)
 endif
 
-defines += $(arch) $(platform) $(features)
+config := $(shell echo $(config) | tr 'a-z' 'A-Z')
+DEFINES += $(addsuffix =1,$(addprefix CONFIG_,$(config)))
+defines += $(arch) $(platform) $(features) 
 
 # Temporary directory
 TMP = tmp-$(arch)
@@ -73,6 +77,9 @@ PPFLAGS = $(INCLUDES) $(DEFINES)
 	CPPFLAGS += -fno-rtti
 	# Adding debugging symbols
 	FLAGS += -g
+	# Using 2011 C ISO standard
+	CFLAGS += -std=c11
+	CFLAGS += -fplan9-extensions
 	
 CFLAGS += $(FLAGS)
 CPPFLAGS += $(FLAGS)
@@ -158,9 +165,21 @@ show-sources:
 show-objects:
 	@ echo $(objects)
 	
+show-configs:
+	@ echo $(config)
+	
+show-defines:
+	@ echo $(defines)
+	
+show-CONFIG:
+	@ echo $(CONFIG)
+	
+show-DEFINES:
+	@ echo $(DEFINES)
+	
 show-tools:
 	@ echo "Assembler $(ASM)"
 	@ echo "C compiler $(CC)"
 
 -include $(deps)
-	
+

@@ -113,6 +113,8 @@ typedef signed long long s64;
 #    define FALSE   0                           ///< logical false value
 #    define TRUE    1                           //< logical true value
 #    define bool    char                        //< bool type
+#    define size_t  u32                         //< size type
+#    define ssize_t s32                         //< signed size type
 
 /**
  * @typedef addr_t
@@ -178,5 +180,7 @@ typedef u64 register_t;
 #    else
 #        error Unknown pointer size!
 #    endif
+
+typedef addr_t ptrdiff_t;
 
 #endif /* !__flos__TYPES_H__ */

@@ -31,10 +31,16 @@
 /** Specify section for data */
 #    define __section(x)            __attribute__((section(x)))
 
+#    define likely(x)               __builtin_expect(!!(x), 1)
+#    define unlikely(x)             __builtin_expect(!!(x), 0)
+
 #    ifdef __cplusplus
 #        define __linkage extern "C"
 #    else
 #        define __linkage
 #    endif
+
+/** Maximal character buffer length */
+#    define MAX_CHAR_BUF_LEN        4096
 
 #endif /* __flos__DEFS_H__ */

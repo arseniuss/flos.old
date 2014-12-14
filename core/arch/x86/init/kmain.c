@@ -8,6 +8,9 @@
  * @copyright see file LICENSE
  */
 
+#include <flos/kernel.h>
+
 int kmain() {
+    kprintf("kmain\n");
     return 0;
 }

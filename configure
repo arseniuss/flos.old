@@ -21,9 +21,11 @@ force=0
 host='unknown'
 arch='unknown'
 features=''
+config=''
 
 supported_arch='x86'
 supported_features=''
+supported_config='bochs'
 
 feature_debug=0						# Without debug extensions by default
 feature_multiboot=1 				# Multiboot esabled by default
@@ -46,6 +48,7 @@ Usage: ${PROGNAME} [OPTIONS]
 Options:
 	--arch=<arch>		specify target architecture
 	--assembler=<path>	specity path to nasm assembler
+	--config=<config>	specify configuration
 	--core-dir=<path>	specify core directory
 	--cross-compiler=<path>	path cross compiler
 	--cross-compiler-prefix=<prefix> prefix before cross compiler tools
@@ -106,6 +109,12 @@ for i in "$@"; do
    		;;
    	--assembler=*|--as=*)
    		as_dir="${i#*=}"
+   		;;
+   	--config=*)
+   		config="$config ${i#*=}"
+   		;;
+   	-f=*)
+   		features="$features ${i#*=}"
    		;;
     *)
     	echo "Error: unknown argument '$i'"
@@ -214,6 +223,12 @@ arch = $arch
 #	Supported: ${supported_features}
 #
 features = $features
+
+#
+# Configuration:
+#	Supported: ${supported_config}
+#
+config = $config
 
 EOF
 

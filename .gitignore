@@ -2,3 +2,5 @@ config.mk/core/kernel.x86.elf
 /config.mk
 nbproject/private
 *~
+configure.*
+/core/serial.log

@@ -12,4 +12,7 @@ include arch/$(arch)/sources.mk
 include debug/sources.mk
 include drivers/sources.mk
 
-sources +=
+sources +=  \
+    lib/ctype.c \
+    lib/string.c \
+    lib/vsprintf.c
