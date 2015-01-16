@@ -17,10 +17,6 @@
                     <name>x86</name>
                     <type>0</type>
                 </confElem>
-                <confElem>
-                    <name>x86_64</name>
-                    <type>0</type>
-                </confElem>
             </confList>
             <formatting>
                 <project-formatting-style>true</project-formatting-style>

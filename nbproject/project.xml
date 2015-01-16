@@ -4,9 +4,9 @@
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
             <name>flos</name>
-            <c-extensions>c</c-extensions>
-            <cpp-extensions/>
-            <header-extensions>h</header-extensions>
+            <c-extensions>c,i,m</c-extensions>
+            <cpp-extensions>C,cc,cpp,cxx,mm</cpp-extensions>
+            <header-extensions>H,h,hpp,tcc</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>

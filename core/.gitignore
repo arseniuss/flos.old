@@ -6,3 +6,4 @@ config.mk
 tmp-*
 nbproject/private
 *.elf
+*~

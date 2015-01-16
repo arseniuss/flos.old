@@ -12,5 +12,13 @@
 #    define __flos__KERNEL_H__
 
 #    include <flos/kprintf.h>
+#    include <flos/types.h>
+
+enum alloc_type {
+    KMALLOC_ALIGNED,
+    KMALLOC_PHYS,
+};
+
+__linkage void *kmalloc(size_t sz, int flags, ...);
 
 #endif /* __flos__KERNEL_H__ */

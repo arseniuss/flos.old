@@ -15,7 +15,7 @@ ata2: enabled=0
 ata3: enabled=0
 parport1: enabled=1, file=""
 parport2: enabled=0
-com1: enabled=1, mode=null, dev=""
+com1: enabled=1, mode=file, dev=serial.log
 com2: enabled=0
 com3: enabled=0
 com4: enabled=0
@@ -28,7 +28,7 @@ cpu: count=1, ips=4000000, reset_on_triple_fault=0, ignore_bad_msrs=1
 cpuid: cpuid_limit_winnt=0, mmx=1, sse=sse2, xapic=1, sep=1, aes=0, xsave=0, movbe=0, 1g_pages=0, pcid=0 fsgsbase=0
 cpuid: stepping=3, vendor_string="GenuineIntel", brand_string="              Intel(R) Pentium(R) 4 CPU        "
 print_timestamps: enabled=0
-gdbstub: enabled=1, port=1234, text_base=0, data_base=0, bss_base=0
+#gdbstub: enabled=1, port=1234, text_base=0, data_base=0, bss_base=0
 port_e9_hack: enabled=1
 magic_break: enabled=1
 text_snapshot_check: enabled=0

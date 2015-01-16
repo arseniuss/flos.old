@@ -13,6 +13,8 @@ include debug/sources.mk
 include drivers/sources.mk
 
 sources +=  \
+    lib/bits.c \
     lib/ctype.c \
     lib/string.c \
-    lib/vsprintf.c
+    lib/vsprintf.c \
+    mem/tlsf.c

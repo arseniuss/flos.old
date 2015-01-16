@@ -9,12 +9,12 @@
  */
 
 #ifndef __flos_x86__IO_H__
-#    define __flos_x86__IO_H__
+#define __flos_x86__IO_H__
 
-#    include <flos/defs.h>
-#    include <flos/types.h>
+#include <flos/defs.h>
+#include <flos/types.h>
 
-#    define BUILDIO(bw, type)                                                  \
+#define BUILDIO(bw, type)                                                  \
         static inline void out##bw(u16 port, type value) {                     \
             __asm("out" #bw " %" #bw "0, %w1" :: "a"(value), "Nd"(port));      \
         }                                                                      \
@@ -37,8 +37,8 @@
                 "%edi", "%ecx", "memory");                                     \
         }
 
-BUILDIO(b, u8);
-BUILDIO(w, u16);
-BUILDIO(l, u32);
+BUILDIO (b, u8);
+BUILDIO (w, u16);
+BUILDIO (l, u32);
 
 #endif /* __flos_x86__IO_H__ */

@@ -26,4 +26,7 @@ __linkage int sprintf(char *buf, const char *fmt, ...);
 __linkage int snprintf(char *buf, size_t size, const char *fmt, ...);
 __linkage int vsprintf(char *buf, const char *fmt, va_list args);
 
+__linkage int ffs(int);
+__linkage int fls(int);
+
 #endif /* __flos__STRING_H__ */
