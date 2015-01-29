@@ -22,7 +22,7 @@ extern int KLOG(int level, const char *buf);
 int count = 0;
 
 __linkage int early_kprintf(const char *str) {
-    volatile char *video = (volatile char *) 0xB8000 + count * 2;
+    volatile char *video = (volatile char *)0xB8000 + count * 2;
 
     while(*str) {
         *video++ = *str++;

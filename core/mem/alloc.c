@@ -12,7 +12,7 @@
 #include <flos/vaargs.h>
 
 void init_pool() {
-    
+
 }
 
 void *kmalloc(size_t sz, int flags, ...) {

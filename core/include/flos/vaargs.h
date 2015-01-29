@@ -11,7 +11,7 @@
 #ifndef __flos__VAARGS_H__
 #    define __flos__VAARGS_H__
 
-typedef char * va_list;
+typedef char *va_list;
 
 #    define __va_size(type)                                                    \
 	(((sizeof(type) + sizeof(long) - 1) / sizeof(long)) * sizeof(long))

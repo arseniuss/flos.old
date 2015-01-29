@@ -19,16 +19,16 @@
 #include <flos/types.h>
 #include <flos/vaargs.h>
 
-#define FLAG_LEFT           1 /* Left justify */
-#define FLAG_ZERO           2 /* Fill with zeros */
-#define FLAG_SPACE          4 /* use space as number's + sign */
-#define FLAG_PLUS           8 /* always show number's sign */
-#define FLAG_SIGN           16 /* it is signed number */
-#define FLAG_SMALL          32 /* use lowercase in hex (must be 32 = 0x20) */
+#define FLAG_LEFT           1          /* Left justify */
+#define FLAG_ZERO           2          /* Fill with zeros */
+#define FLAG_SPACE          4          /* use space as number's + sign */
+#define FLAG_PLUS           8          /* always show number's sign */
+#define FLAG_SIGN           16         /* it is signed number */
+#define FLAG_SMALL          32         /* use lowercase in hex (must be 32 = 0x20) */
 #define FLAG_SPEC           64
 
 enum format_type {
-    FORMAT_TYPE_NONE, /* Just a string part */
+    FORMAT_TYPE_NONE,           /* Just a string part */
     FORMAT_TYPE_WIDTH,
     FORMAT_TYPE_PRECISION,
     FORMAT_TYPE_CHAR,
@@ -70,7 +70,9 @@ int skip_atoi(const char **s) {
 int format_decode(const char *fmt, struct printf_spec *spec) {
     const char *start = fmt;
 
-    /* we finished early by reading the field width */
+    /*
+     * we finished early by reading the field width 
+     */
     if(spec->type == FORMAT_TYPE_WIDTH) {
         if(spec->width < 0) {
             spec->width = -spec->width;
@@ -80,7 +82,9 @@ int format_decode(const char *fmt, struct printf_spec *spec) {
         goto precision;
     }
 
-    /* we finished early by reading the precision */
+    /*
+     * we finished early by reading the precision 
+     */
     if(spec->type == FORMAT_TYPE_PRECISION) {
         if(spec->precision < 0)
             spec->precision = 0;
@@ -96,11 +100,15 @@ int format_decode(const char *fmt, struct printf_spec *spec) {
             break;
     }
 
-    /* Return the current non-format string */
+    /*
+     * Return the current non-format string 
+     */
     if(!*fmt || fmt != start)
         return fmt - start;
 
-    /* Process flags */
+    /*
+     * Process flags 
+     */
     spec->flags = 0;
 
     bool found;
@@ -109,34 +117,46 @@ int format_decode(const char *fmt, struct printf_spec *spec) {
 
         ++fmt;
 
-        switch(*fmt) {
-            case '-': spec->flags |= FLAG_LEFT;
+        switch (*fmt) {
+            case '-':
+                spec->flags |= FLAG_LEFT;
                 break;
-            case '+': spec->flags |= FLAG_PLUS;
+            case '+':
+                spec->flags |= FLAG_PLUS;
                 break;
-            case ' ': spec->flags |= FLAG_SPACE;
+            case ' ':
+                spec->flags |= FLAG_SPACE;
                 break;
-            case '#': spec->flags |= FLAG_SPEC;
+            case '#':
+                spec->flags |= FLAG_SPEC;
                 break;
-            case '0': spec->flags |= FLAG_ZERO;
+            case '0':
+                spec->flags |= FLAG_ZERO;
                 break;
-            default: found = FALSE;
+            default:
+                found = FALSE;
         }
     } while(found);
 
-    /* get field width */
+    /*
+     * get field width 
+     */
     spec->width = -1;
 
     if(isdigit(*fmt))
         spec->width = skip_atoi(&fmt);
     else if(*fmt == '*') {
-        /* it's the next argument */
+        /*
+         * it's the next argument 
+         */
         spec->type = FORMAT_TYPE_WIDTH;
         return ++fmt - start;
     }
 
-precision:
-    /* get the precision */
+  precision:
+    /*
+     * get the precision 
+     */
     spec->precision = -1;
     if(*fmt == '.') {
         ++fmt;
@@ -145,14 +165,18 @@ precision:
             if(spec->precision < 0)
                 spec->precision = 0;
         } else if(*fmt == '*') {
-            /* it's the next argument */
+            /*
+             * it's the next argument 
+             */
             spec->type = FORMAT_TYPE_PRECISION;
             return ++fmt - start;
         }
     }
 
-qualifier:
-    /* get the conversion qualifier */
+  qualifier:
+    /*
+     * get the conversion qualifier 
+     */
     spec->qualifier = -1;
     if(*fmt == 'h' || _tolower(*fmt) == 'l' ||
        _tolower(*fmt) == 'z' || *fmt == 't') {
@@ -168,9 +192,11 @@ qualifier:
         }
     }
 
-    /* default base */
+    /*
+     * default base 
+     */
     spec->base = 10;
-    switch(*fmt) {
+    switch (*fmt) {
         case 'c':
             spec->type = FORMAT_TYPE_CHAR;
             return ++fmt - start;
@@ -187,7 +213,9 @@ qualifier:
             spec->type = FORMAT_TYPE_PERCENT_CHAR;
             return ++fmt - start;
 
-            /* integer number formats - set up the flags and "break" */
+            /*
+             * integer number formats - set up the flags and "break" 
+             */
         case 'o':
             spec->flags |= FLAG_SMALL;
         case 'O':
@@ -241,22 +269,25 @@ qualifier:
     return ++fmt - start;
 }
 
-char *number(char *buf, char *end, unsigned long long num, struct printf_spec spec) {
+char *number(char *buf, char *end, unsigned long long num,
+             struct printf_spec spec) {
     static const char digits[16] = "0123456789ABCDEF";
     char tmp[66];
 
-    char sign; /* Sign before number */
-    char *no; /* Points to number in ASCII form */
-    int width; /* Width of the number */
+    char sign;                  /* Sign before number */
+    char *no;                   /* Points to number in ASCII form */
+    int width;                  /* Width of the number */
     char locase = (spec.flags & FLAG_SMALL);
     int need_prefix = ((spec.flags & FLAG_SPEC) && spec.base != 10);
 
-    /* Determent sign printing */
+    /*
+     * Determent sign printing 
+     */
     sign = 0;
     if(spec.flags & FLAG_SIGN) {
-        if((signed long) num < 0) {
+        if((signed long)num < 0) {
             sign = '-';
-            num = -(signed long) num;
+            num = -(signed long)num;
             spec.width--;
         } else if(spec.flags & FLAG_PLUS) {
             sign = '+';
@@ -267,12 +298,16 @@ char *number(char *buf, char *end, unsigned long long num, struct printf_spec sp
         }
     }
 
-    /* Prefix */
+    /*
+     * Prefix 
+     */
     if(need_prefix) {
         spec.width -= 2;
     }
 
-    /* Convert number to ASCII form */
+    /*
+     * Convert number to ASCII form 
+     */
     no = &tmp[65];
     *no = '\0';
     do {
@@ -289,7 +324,9 @@ char *number(char *buf, char *end, unsigned long long num, struct printf_spec sp
         spec.precision = width;
     spec.width -= spec.precision;
 
-    /* If not fill with zeros or left justify */
+    /*
+     * If not fill with zeros or left justify 
+     */
     if(!(spec.flags & (FLAG_ZERO + FLAG_LEFT))) {
         while(--spec.width >= 0) {
             if(buf < end)
@@ -298,20 +335,24 @@ char *number(char *buf, char *end, unsigned long long num, struct printf_spec sp
         }
     }
 
-    /* Sign */
+    /*
+     * Sign 
+     */
     if(sign) {
         if(buf < end)
             *buf = sign;
         ++buf;
     }
 
-    /* Prefix */
+    /*
+     * Prefix 
+     */
     if(need_prefix) {
         if(buf < end)
             *buf = '0';
         ++buf;
         if(buf < end)
-            switch(spec.base) {
+            switch (spec.base) {
                 case 2:
                     *buf = 'B' | locase;
                     break;
@@ -325,7 +366,9 @@ char *number(char *buf, char *end, unsigned long long num, struct printf_spec sp
         ++buf;
     }
 
-    /* Zero or space padding */
+    /*
+     * Zero or space padding 
+     */
     if(!(spec.flags & FLAG_LEFT)) {
         char c = (spec.flags & FLAG_ZERO) ? '0' : ' ';
         while(--spec.width >= 0) {
@@ -335,21 +378,27 @@ char *number(char *buf, char *end, unsigned long long num, struct printf_spec sp
         }
     }
 
-    /* Precision padding */
+    /*
+     * Precision padding 
+     */
     while(width <= --spec.precision) {
         if(buf < end)
             *buf = '0';
         ++buf;
     }
 
-    /* Buffer with number */
+    /*
+     * Buffer with number 
+     */
     for(; *no; ++no) {
         if(buf < end)
             *buf = *no;
         ++buf;
     }
 
-    /* Trailing space */
+    /*
+     * Trailing space 
+     */
     while(--spec.width >= 0) {
         if(buf < end)
             *buf = ' ';
@@ -362,7 +411,7 @@ char *number(char *buf, char *end, unsigned long long num, struct printf_spec sp
 char *string(char *buf, char *end, const char *s, struct printf_spec spec) {
     int len, i;
 
-    if((unsigned long) s < 4096) //TODO: replace 4096 with PAGE_SIZE
+    if((unsigned long)s < 4096)        //TODO: replace 4096 with PAGE_SIZE
         s = "(null)";
 
     len = strnlen(s, spec.precision);
@@ -391,7 +440,7 @@ char *string(char *buf, char *end, const char *s, struct printf_spec spec) {
 
 char *pointer(const char *fmt, char *buf, char *end, void *ptr,
               struct printf_spec spec) {
-    int default_width = 2 * sizeof (void *) + (spec.flags & FLAG_SPEC ? 2 : 0);
+    int default_width = 2 * sizeof(void *) + (spec.flags & FLAG_SPEC ? 2 : 0);
 
     spec.flags |= FLAG_SMALL;
     if(spec.width == -1) {
@@ -400,12 +449,12 @@ char *pointer(const char *fmt, char *buf, char *end, void *ptr,
     }
     spec.base = 16;
 
-    return number(buf, end, (unsigned long) ptr, spec);
+    return number(buf, end, (unsigned long)ptr, spec);
 }
 
 int vsnprintf(char *buf, size_t size, const char *fmt, va_list args) {
     unsigned long long num;
-    struct printf_spec spec = {0};
+    struct printf_spec spec = { 0 };
     char *str = buf;
     char *end = buf + size;
 
@@ -415,7 +464,7 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args) {
 
         fmt += read;
 
-        switch(spec.type) {
+        switch (spec.type) {
             case FORMAT_TYPE_NONE:
             {
                 int copy = read;
@@ -448,7 +497,7 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args) {
 
                     }
                 }
-                c = (unsigned char) va_arg(args, int);
+                c = (unsigned char)va_arg(args, int);
                 if(str < end)
                     *str = c;
                 ++str;
@@ -465,8 +514,7 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args) {
                 break;
 
             case FORMAT_TYPE_PTR:
-                str = pointer(fmt + 1, str, end, va_arg(args, void *),
-                              spec);
+                str = pointer(fmt + 1, str, end, va_arg(args, void *), spec);
                 while(isalnum(*fmt))
                     fmt++;
                 break;
@@ -484,9 +532,11 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args) {
                 break;
 
 
-                /* Decimals */
+                /*
+                 * Decimals 
+                 */
             default:
-                switch(spec.type) {
+                switch (spec.type) {
                     case FORMAT_TYPE_LONG_LONG:
                         num = va_arg(args, long long);
                         break;
@@ -506,19 +556,19 @@ int vsnprintf(char *buf, size_t size, const char *fmt, va_list args) {
                         num = va_arg(args, ptrdiff_t);
                         break;
                     case FORMAT_TYPE_UBYTE:
-                        num = (unsigned char) va_arg(args, int);
+                        num = (unsigned char)va_arg(args, int);
                         break;
                     case FORMAT_TYPE_BYTE:
-                        num = (signed char) va_arg(args, int);
+                        num = (signed char)va_arg(args, int);
                         break;
                     case FORMAT_TYPE_USHORT:
-                        num = (unsigned short) va_arg(args, int);
+                        num = (unsigned short)va_arg(args, int);
                         break;
                     case FORMAT_TYPE_SHORT:
-                        num = (short) va_arg(args, int);
+                        num = (short)va_arg(args, int);
                         break;
                     case FORMAT_TYPE_INT:
-                        num = (int) va_arg(args, int);
+                        num = (int)va_arg(args, int);
                         break;
                     default:
                         num = va_arg(args, unsigned int);

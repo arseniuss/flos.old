@@ -27,7 +27,7 @@
 
 static inline int kprintf_get_level(const char *buffer) {
     if(buffer[0] == KERN_SOH_ASCII && buffer[1]) {
-        switch(buffer[1]) {
+        switch (buffer[1]) {
             case '0' ... '7':
             case 'd':
                 return buffer[1];

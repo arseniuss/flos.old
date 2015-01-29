@@ -52,27 +52,27 @@
 
 /** Segment descriptor structure */
 struct seg_desc {
-    u16 low_limit; ///< low bits of segment limit
-    u16 low_base; ///< low bits of segment base
-    u8 mid_base; ///< middle bits of segment base
+    u16 low_limit;              ///< low bits of segment limit
+    u16 low_base;               ///< low bits of segment base
+    u8 mid_base;                ///< middle bits of segment base
 
     union {
         u8 flags;
 
         struct {
-            u8 seg_type : 4; ///< segment type
-            u8 desc_type : 1; ///< 0 - system, 1 - application
-            u8 dpl : 2; ///< Descriptor Privilege Level
-            u8 present : 1; ///< Present
+            u8 seg_type:4;      ///< segment type
+            u8 desc_type:1;     ///< 0 - system, 1 - application
+            u8 dpl:2;           ///< Descriptor Privilege Level
+            u8 present:1;       ///< Present
         };
     };
 
-    u8 high_limit : 4; ///< High bits of segment limit
-    u8 __1 : 1; ///< unused
-    u8 __2 : 1; ///< reserved (IA-32e)
-    u8 db : 1; ///< Default operation size (0 - 16bit, 1 - 32bit)
-    u8 gran : 1; ///< Granularity (0 - bytes, 1 - 4KB pages)
-    u8 high_base; ///< High bits of base
+    u8 high_limit:4;            ///< High bits of segment limit
+    u8 __1:1;                   ///< unused
+    u8 __2:1;                   ///< reserved (IA-32e)
+    u8 db:1;                    ///< Default operation size (0 - 16bit, 1 - 32bit)
+    u8 gran:1;                  ///< Granularity (0 - bytes, 1 - 4KB pages)
+    u8 high_base;               ///< High bits of base
 } __packed;
 
 /** Segment creation macro */
@@ -85,21 +85,21 @@ struct seg_desc {
 
 /** Gate descriptor structure */
 struct gate_desc {
-    u16 low_offset; ///< low bits of offset in segment
-    u16 ss; ///< segment selector
-    u8 args; ///< argument count (for call gates)
+    u16 low_offset;             ///< low bits of offset in segment
+    u16 ss;                     ///< segment selector
+    u8 args;                    ///< argument count (for call gates)
 
     union {
         u8 flags;
 
         struct {
-            u8 seg_type : 4; ///< segment type SEGT_*GATE
-            u8 decr_type : 1; ///< descriptor type (must be 0 - system)
-            u8 dpl : 2; ///< Descriptor Privilege Level
-            u8 present : 1; ///< Present
+            u8 seg_type:4;      ///< segment type SEGT_*GATE
+            u8 decr_type:1;     ///< descriptor type (must be 0 - system)
+            u8 dpl:2;           ///< Descriptor Privilege Level
+            u8 present:1;       ///< Present
         };
     };
-    u16 high_offset; ///< high bits of offset in segment
+    u16 high_offset;            ///< high bits of offset in segment
 } __packed;
 
 struct seg_ptr {
@@ -121,8 +121,7 @@ static inline void idt_intr_gate(struct gate_desc *idt_entry,
     idt_entry->high_offset = (offset >> 16) & 0xFFFF;
 }
 
-static inline void idt_task_gate(struct gate_desc *idt_entry, u16 seg,
-                                 int dpl) {
+static inline void idt_task_gate(struct gate_desc *idt_entry, u16 seg, int dpl) {
     idt_entry->low_offset = 0;
     idt_entry->ss = seg;
     idt_entry->args = 0;
@@ -144,7 +143,7 @@ static inline void idt_trap_gate(struct gate_desc *idt_entry,
 }
 
 static inline void flush_idt(struct seg_ptr *idt_ptr) {
-    __asm("lidt %0" ::"m"(*idt_ptr) : "memory");
+  __asm("lidt %0"::"m"(*idt_ptr):"memory");
 }
 
 static inline void enable_interrupts() {
@@ -156,11 +155,11 @@ static inline void disable_interrupts() {
 }
 
 static inline void push_interrupts(volatile u32 * volatile buff) {
-    __asm("pushf; pop %0; cli; " : "=g"(*buff));
+  __asm("pushf; pop %0; cli; ":"=g"(*buff));
 }
 
 static inline void pop_interrupts(volatile u32 * volatile buff) {
-    __asm("push %0; popf;" : : "g"(*buff));
+  __asm("push %0; popf;": :"g"(*buff));
 }
 
 extern struct gate_desc kernel_idt[];

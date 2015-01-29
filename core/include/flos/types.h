@@ -11,22 +11,22 @@
 #ifndef __flos__TYPES_H__
 #    define __flos__TYPES_H__
 
-#    define NULL        0                   ///< null value
-#    define NULL_p      ((void *)0)         ///< null pointer
-#    define MAX         ((unsigned)-1)      ///< max value
-#    define MAX_p       ((void *)MAX)       ///< max pointer
+#    define NULL        0              ///< null value
+#    define NULL_p      ((void *)0)    ///< null pointer
+#    define MAX         ((unsigned)-1) ///< max value
+#    define MAX_p       ((void *)MAX)  ///< max pointer
 
 #    if __CHAR_BIT__ == 8
-typedef unsigned char u8; ///< unsigned 8bit int type
-typedef signed char s8; ///< signed 8bit int type
+typedef unsigned char u8;       ///< unsigned 8bit int type
+typedef signed char s8;         ///< signed 8bit int type
 #    else
 #        error A 'char' lenght is not 8 bits!
 #    endif
 
-#    define u8_min      0                   ///< min unsigned 8bit int value
-#    define u8_max      0xff                ///< max unsigned 8bit int value
-#    define s8_min      (-0x7f - 1)         ///< min signed 8bit int value
-#    define s8_max      0x7f                ///< max signed 8bit int value
+#    define u8_min      0              ///< min unsigned 8bit int value
+#    define u8_max      0xff           ///< max unsigned 8bit int value
+#    define s8_min      (-0x7f - 1)    ///< min signed 8bit int value
+#    define s8_max      0x7f           ///< max signed 8bit int value
 
 /**
  * @def char_max
@@ -60,10 +60,10 @@ typedef signed short s16;
 #        error Neither 'int' not 'short' is 2 bytes long!
 #    endif
 
-#    define u16_min     0                       ///< min unsigned 16bit value
-#    define u16_max     0xffffU                 ///< max unsigned 16bit value
-#    define s16_min     (-0x7fff - 1)           ///< min signed 16bit value
-#    define s16_max     0x7fff                  ///< max signed 16bit value
+#    define u16_min     0              ///< min unsigned 16bit value
+#    define u16_max     0xffffU        ///< max unsigned 16bit value
+#    define s16_min     (-0x7fff - 1)  ///< min signed 16bit value
+#    define s16_max     0x7fff         ///< max signed 16bit value
 
 /**
  * @typedef u32
@@ -76,16 +76,15 @@ typedef signed short s16;
 typedef unsigned int u32;
 typedef signed int s32;
 #    elif __SIZEOF_LONG__ == 4
-typedef unsigned long u32
-typedef signed long s32;
+typedef unsigned long u32 typedef signed long s32;
 #    else
 #        error Neither 'int' nor 'short' is 4 bytes long!
 #    endif
 
-#    define u32_min     0                       ///< min unsigned 32bit value
-#    define u32_max     0xffffffffU             ///< max unsigned 32bit value
-#    define s32_min     (-0x7fffffff - 1)       ///< min signed 32bit value
-#    define s32_max     0x7fffffff              ///< max signed 32bit value
+#    define u32_min     0              ///< min unsigned 32bit value
+#    define u32_max     0xffffffffU    ///< max unsigned 32bit value
+#    define s32_min     (-0x7fffffff - 1)   ///< min signed 32bit value
+#    define s32_max     0x7fffffff     ///< max signed 32bit value
 
 /**
  * @typedef u64
@@ -105,16 +104,16 @@ typedef signed long long s64;
 #        warning Neither 'long' nor 'long long' is 8 bytes long!
 #    endif
 
-#    define u64_min 0                           ///< min unsigned 64bit value
-#    define u64_max 0xffffffffffffffffU         ///< max unsigned 64bit value
+#    define u64_min 0                  ///< min unsigned 64bit value
+#    define u64_max 0xffffffffffffffffU ///< max unsigned 64bit value
 #    define s64_min (-0x7fffffffffffffff - 1)   ///< min signed 64bit value
-#    define s64_max 0x7fffffffffffffff          ///< max signed 64bit value
+#    define s64_max 0x7fffffffffffffff ///< max signed 64bit value
 
-#    define FALSE   0                           ///< logical false value
-#    define TRUE    1                           //< logical true value
-#    define bool    char                        //< bool type
-#    define size_t  u32                         //< size type
-#    define ssize_t s32                         //< signed size type
+#    define FALSE   0                  ///< logical false value
+#    define TRUE    1                  //< logical true value
+#    define bool    char               //< bool type
+#    define size_t  u32                //< size type
+#    define ssize_t s32                //< signed size type
 
 /**
  * @typedef addr_t

@@ -15,16 +15,16 @@
 #define COM1PORT            0x3F8
 
 const char *sh_color[] = {
-                          "\e[1\e[31m", ///< ENERG
-                          "\e[31m", ///< ALERT
-                          "\e[91m", ///< CRIT
-                          "\e[31m", ///< ERR
-                          "\e[33m", ///< WARN
-                          "\e[92m", ///< NOTICE
-                          "\e[32m", ///< INFO
-                          "\e[94m", ///< DEBUG
+    "\e[1\e[31m",                      ///< ENERG
+    "\e[31m",                          ///< ALERT
+    "\e[91m",                          ///< CRIT
+    "\e[31m",                          ///< ERR
+    "\e[33m",                          ///< WARN
+    "\e[92m",                          ///< NOTICE
+    "\e[32m",                          ///< INFO
+    "\e[94m",                          ///< DEBUG
 };
-int sh_colors = {sizeof (sh_color) / sizeof (sh_color[0])};
+int sh_colors = { sizeof(sh_color) / sizeof(sh_color[0]) };
 
 /**
  * Checks of serial port if free to write
@@ -36,7 +36,9 @@ static bool serial_isempty(u16 port) {
 
 void serial_putc(char ch) {
 #ifdef CONFIG_BOCHS
-    /* If we emulate in Bochs, use E9 hack. */
+    /*
+     * If we emulate in Bochs, use E9 hack. 
+     */
     outb(0xE9, ch);
 #endif
 
