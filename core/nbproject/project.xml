@@ -22,7 +22,7 @@
                 <project-formatting-style>true</project-formatting-style>
                 <c-style>Default_0|Arseniuss</c-style>
                 <cpp-style>Default_1|Arseniuss</cpp-style>
-                <header-style>Default_2|Arseniuss</header-style>
+                <header-style>Default_0|Arseniuss</header-style>
             </formatting>
         </data>
     </configuration>

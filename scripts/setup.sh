@@ -12,3 +12,9 @@
 
 # Installs pre-commit hook
 ln -s ../../scripts/pre-commit.sh ./.git/hooks/pre-commit
+
+# Installs needed packages
+
+sudo apt-get install nasm
+sudo apt-get install bochs bochs-x bochs-sdl
+sudo apt-get install qemu qemu-kvm

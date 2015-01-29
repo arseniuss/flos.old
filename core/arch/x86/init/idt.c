@@ -1,5 +1,5 @@
 /**
- * @file    arch/x86/init/idt.c  
+ * @file    arch/x86/init/idt.c
  * @brief   Interrupt Descriptor Table
  * @version 1.0
  * @date    14.12.2014.
@@ -61,14 +61,14 @@ char *exception_messages[] = {
 int init_idt() {
     kinfof("Initing interrupts ... ");
 
-    pic_remap(0x20, 0x28);
+    pic_remap(IRQ_OFFSET_MASTER, IRQ_OFFSET_SLAVE);
 
     idt_ptr.limit = sizeof(struct gate_desc) * INTERRUPT_COUNT - 1;
     idt_ptr.base = (u32) & idt_table;
 
     memset(&idt_table, 0, sizeof(struct gate_desc) * INTERRUPT_COUNT);
 
-    for(int i = 0; i <= 47; i++) {
+    for(int i = 0; i <= IRQ_ISR_VECTORS; i++) {
         idt_trap_gate(&idt_table[i], KERNEL_CS, idt_vectors[i], 0, 1);
     }
 

@@ -28,7 +28,7 @@ supported_features=''
 supported_config='bochs'
 
 feature_debug=0						# Without debug extensions by default
-feature_multiboot=1 				# Multiboot esabled by default
+feature_multiboot=1 				# Multiboot enabled by default
 
 core=1								# Create configuration for building core
 core_dir=core						# Path to core
@@ -113,7 +113,7 @@ for i in "$@"; do
    	--config=*)
    		config="$config ${i#*=}"
    		;;
-   	-f=*)
+   	--features=*|-f=*)
    		features="$features ${i#*=}"
    		;;
     *)
@@ -175,7 +175,7 @@ fi
 # Setting feature list
 case "$arch" in
 	"x86")
-		supported_features='DEBUG MULTIBOOT'
+		supported_features='DEBUG MULTIBOOT SERIALLOG'
 		
 		if [ $feature_debug -eq 1 ]; then features="$features DEBUG"; fi
 		if [ $feature_multiboot -eq 1 ] && [ $core -eq 1 ]; then features="$features MULTIBOOT"; fi

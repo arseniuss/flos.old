@@ -31,6 +31,17 @@ $(addprefix configure-,$(x86-rules)):
 		--ccp=$(subst configure-,,$@)-elf- \
 		--force
 		
+$(addprefix configure-debug-,$(x86-rules)):
+	. gcc-cc/toolvers && \
+	./configure \
+		--arch=x86 \
+		--cc=gcc-cc/$(subst configure-debug-,,$@)-elf-$$GCCVER-`uname`-`uname -m` \
+		--ccp=$(subst configure-debug-,,$@)-elf- \
+		--config=bochs \
+		--debug \
+		--features=SERIALLOG \
+		--force
+		
 core:
 	@ make -C core
 

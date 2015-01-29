@@ -1,5 +1,5 @@
 /**
- * @file    arch/x86/config.h  
+ * @file    arch/x86/config.h
  * @brief   x86 configuration header
  * @version 1.0
  * @date    29.11.2014.
@@ -150,5 +150,11 @@
 
 /** Interrupt count */
 #    define INTERRUPT_COUNT             256
+
+#    define IRQ_OFFSET_MASTER           0x20
+#    define IRQ_OFFSET_SLAVE            0x28
+
+/** Specially handled interrupt vectors */
+#    define IRQ_ISR_VECTORS             47
 
 #endif /* __flos_x86__config_h__ */
