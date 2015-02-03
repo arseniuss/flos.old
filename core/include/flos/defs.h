@@ -42,6 +42,10 @@
 #        define __linkage
 #    endif
 
+#    ifndef typeof
+#        define typeof(x)           __typeof__(x)
+#    endif
+
 /** Maximal character buffer length */
 #    define MAX_CHAR_BUF_LEN        4096
 

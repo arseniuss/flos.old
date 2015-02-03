@@ -11,11 +11,26 @@
 #include <flos/arch/pit.h>
 #include <flos/config.h>
 #include <flos/kprintf.h>
+#include <flos/interrupt.h>
+
+int timer_interrupt_handler(struct iregs *regs);
+
+struct interrupt_handle timer_int = {
+    &timer_interrupt_handler
+};
+
+int timer_interrupt_handler(struct iregs *regs) {
+    kprintf("Handling timer\n");
+
+    return 1;
+}
 
 int init_timer() {
     kinfof("Initing timer ... ");
 
     pit_timer_phase(KERNEL_FREQ);
+
+    register_interrupt(IRQ_OFFSET_MASTER, &timer_int);
 
     kinfof(" OK\n");
 

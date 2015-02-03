@@ -12,7 +12,9 @@
 #include <flos/arch/pic.h>
 #include <flos/arch/registers.h>
 #include <flos/config.h>
+#include <flos/interrupt.h>
 #include <flos/kernel.h>
+#include <flos/list.h>
 #include <flos/string.h>
 #include <flos/types.h>
 
@@ -82,6 +84,12 @@ int init_idt() {
 
 struct iregs *irq_handler(struct iregs *regs) {
     int irq = regs->int_no - IRQ_OFFSET_MASTER;
+    struct interrupt_handle *pos;
+
+    list_for_each_entry(pos, &interrupt_handler[regs->int_no], ihandle_list) {
+        if(pos->ihandle_func(regs) > 0)
+            break;
+    }
 
     pic_eoi(irq);
 

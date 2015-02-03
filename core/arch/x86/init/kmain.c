@@ -12,6 +12,7 @@
 #include <flos/defs.h>
 #include <flos/kernel.h>
 #include <flos/string.h>
+#include <flos/interrupt.h>
 
 void log_header(const char *fmt, ...) {
     char buf[MAX_CHAR_BUF_LEN];
@@ -33,6 +34,7 @@ int kmain() {
     log_header("Compiled @ %s %s\n", __DATE__, __TIME__);
     kinfof("============================================================\n");
 
+    init_interrupts();
     init_idt();
 
     init_timer();

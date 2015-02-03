@@ -41,6 +41,7 @@
           <in>assert.h</in>
           <in>ctype.h</in>
           <in>defs.h</in>
+          <in>interrupt.h</in>
           <in>kernel.h</in>
           <in>kprintf.h</in>
           <in>list.h</in>
@@ -66,6 +67,7 @@
         <in>tlsf.h</in>
       </df>
       <df name="proc">
+        <in>interrupts.c</in>
         <in>sched.c</in>
       </df>
       <df name="scripts">
@@ -172,6 +174,8 @@
       </item>
       <item path="include/flos/defs.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/flos/interrupt.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="include/flos/kernel.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/flos/kprintf.h" ex="false" tool="3" flavor2="0">
@@ -203,6 +207,8 @@
       <item path="mem/tlsf.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="mem/tlsf.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="proc/interrupts.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="proc/sched.c" ex="false" tool="0" flavor2="0">
       </item>

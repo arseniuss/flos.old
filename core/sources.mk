@@ -17,4 +17,6 @@ sources +=  \
     lib/ctype.c \
     lib/string.c \
     lib/vsprintf.c \
-    mem/tlsf.c
+    mem/tlsf.c \
+    proc/interrupts.c \
+    proc/sched.c
