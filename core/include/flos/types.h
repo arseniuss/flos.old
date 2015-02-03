@@ -76,7 +76,8 @@ typedef signed short s16;
 typedef unsigned int u32;
 typedef signed int s32;
 #    elif __SIZEOF_LONG__ == 4
-typedef unsigned long u32 typedef signed long s32;
+typedef unsigned long u32;
+typedef signed long s32;
 #    else
 #        error Neither 'int' nor 'short' is 4 bytes long!
 #    endif
