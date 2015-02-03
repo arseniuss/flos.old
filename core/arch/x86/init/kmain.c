@@ -35,5 +35,7 @@ int kmain() {
 
     init_idt();
 
+    init_timer();
+
     return 0;
 }

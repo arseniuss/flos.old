@@ -25,6 +25,9 @@
             <in>idt.c</in>
             <in>kmain.c</in>
           </df>
+          <df name="proc">
+            <in>timer.c</in>
+          </df>
         </df>
       </df>
       <df name="debug">
@@ -156,6 +159,8 @@
       <item path="arch/x86/init/idt.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="arch/x86/init/kmain.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="arch/x86/proc/timer.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="debug/kprintf.c" ex="false" tool="0" flavor2="0">
       </item>

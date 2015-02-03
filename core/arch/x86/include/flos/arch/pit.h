@@ -11,7 +11,7 @@
 #ifndef __flos_x86__PIC_H__
 #    define __flos_x86__PIC_H__
 
-#    include <arch/io.h>
+#    include <flos/arch/io.h>
 
 #    define PIT_BASE_PORT       0x40
 

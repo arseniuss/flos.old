@@ -15,3 +15,7 @@ ifneq (,$(findstring SERIALLOG,$(features)))
     sources += debug/log/serial.c
     DEFINES += KLOG=serial_puts
 endif
+
+ifneq (,$(findstring bochs,$(config)))
+    DEFINES += CONFIG_BOCHS
+endif

@@ -1,4 +1,4 @@
 floppya: 1_44="floppy.img", status=inserted
 boot: floppy
 megs: 32
-com1: enabled=1, mode=file, dev=serial.log
+port_e9_hack: enabled=1

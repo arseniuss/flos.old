@@ -73,7 +73,7 @@ int init_idt() {
     }
 
     flush_idt(&idt_ptr);
-    __asm("sti");
+    __asm("sti;");
 
     kinfof(" OK\n");
 
@@ -81,7 +81,9 @@ int init_idt() {
 }
 
 struct iregs *irq_handler(struct iregs *regs) {
-    kprintf("IRQ %d\n", regs->int_no);
+    int irq = regs->int_no - IRQ_OFFSET_MASTER;
+
+    pic_eoi(irq);
 
     return regs;
 }

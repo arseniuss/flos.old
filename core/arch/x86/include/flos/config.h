@@ -157,4 +157,7 @@
 /** Specially handled interrupt vectors */
 #    define IRQ_ISR_VECTORS             47
 
+/** Kernel context switch frequency in HZ */
+#    define KERNEL_FREQ                 100
+
 #endif /* __flos_x86__config_h__ */
