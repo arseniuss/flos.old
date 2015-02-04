@@ -563,7 +563,7 @@ int sprintf(char *buf, const char *fmt, ...) {
     int i;
 
     va_start(args, fmt);
-    i = vsnprintf(buf, u32_max, fmt, args);
+    i = vsnprintf(buf, MAX_CHAR_BUF_LEN, fmt, args);
     va_end(args);
 
     return i;

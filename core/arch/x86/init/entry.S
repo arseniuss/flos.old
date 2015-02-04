@@ -131,7 +131,35 @@ extern kmain
     /* Since stack borders memory pool offset is needed to avoid overflow */
     mov esp, (KERNEL_STACK_START - 8)
 
+#ifdef __TEST__
+    extern __kernel_test_ctors_start__
+    extern __kernel_test_ctors_end__
+
+    mov  ebx, __kernel_test_ctors_start__
+    jmp  .ctor_check
+.call_ctor:
+    call [ebx]
+    add  ebx, 4
+.ctor_check:
+    cmp  ebx, __kernel_test_ctors_end__
+    jb   .call_ctor
+#endif
+
     call kmain
+
+#ifdef __TEST__
+    extern __kernel_test_dtors_start__
+    extern __kernel_test_dtors_end__
+
+    mov  ebx, __kernel_test_dtors_start__
+    jmp  .dtor_check
+.call_dtor:
+    call [ebx]
+    add  ebx, 4
+.dtor_check:
+    cmp  ebx, __kernel_test_dtors_end__
+    jb   .call_dtor
+#endif
 
     jmp loop
 

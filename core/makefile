@@ -10,6 +10,10 @@
 #* @copyright see file LICENSE
 #*
 
+#*
+#* TODO: Target depends on makefiles and source lists -- find new make program
+#*
+
 KERNEL_MAJOR = 0
 KERNEL_MINOR = 1
 KERNEL_PATCH = 0
@@ -116,7 +120,7 @@ dump	= $(addsuffix .dump,$(objects))
 deps	:= $(addsuffix .dep,$(objects))
 
 all: $(TARGET)
-
+	
 $(TARGET): $(objects)
 	@ /bin/echo -e "\t LD $(TARGET)  $(RED)"
 	@ mkdir -p $(TMP)/arch/$(arch)

@@ -29,6 +29,7 @@ supported_config='bochs'
 
 feature_debug=0						# Without debug extensions by default
 feature_multiboot=1 				# Multiboot enabled by default
+feature_tests=0                     # Testing feature disabled by default
 
 core=1								# Create configuration for building core
 core_dir=core						# Path to core
@@ -58,6 +59,7 @@ Options:
 	--multiboot			add multiboot support in core (enabled by default)
 	--no-core			do not create configuration for core
 	--no-multiboot		remove multiboot support from core
+	--test              include tests
 	--usage				prints this help
 	--version | -v 		prints version
 EOF
@@ -116,6 +118,9 @@ for i in "$@"; do
    	--features=*|-f=*)
    		features="$features ${i#*=}"
    		;;
+   	--test)
+   	    feature_tests=1
+   	    ;;
     *)
     	echo "Error: unknown argument '$i'"
     	usage
@@ -175,10 +180,11 @@ fi
 # Setting feature list
 case "$arch" in
 	"x86")
-		supported_features='DEBUG MULTIBOOT SERIALLOG'
+		supported_features='DEBUG TEST MULTIBOOT SERIALLOG'
 		
 		if [ $feature_debug -eq 1 ]; then features="$features DEBUG"; fi
 		if [ $feature_multiboot -eq 1 ] && [ $core -eq 1 ]; then features="$features MULTIBOOT"; fi
+		if [ $feature_tests -eq 1 ] && [ $core -eq 1 ]; then features="$features TEST"; fi
 	;;
 esac
 

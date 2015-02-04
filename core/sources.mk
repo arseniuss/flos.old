@@ -21,3 +21,7 @@ sources +=  \
     mem/tlsf.c \
     proc/interrupts.c \
     proc/sched.c
+
+ifneq (,$(findstring TEST,$(features)))
+    include tests/sources.mk
+endif

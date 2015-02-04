@@ -95,11 +95,29 @@ SECTIONS {
 
     __kernel_bss_end__ = .;
 
+#ifdef __TEST__
+    .tests : AT(ADDR(.tests) - KERNEL_VIRTUAL_BASE)
+    {
+        __kernel_test_ctors_start__ = .;
+        *(SORT(.tests.ctors*))
+        __kernel_test_ctors_end__ = .;
+        
+        __kernel_test_dtors_start__ = .;
+        *(SORT(.tests.dtors*))
+        __kernel_test_dtors_end__ = .;
+
+        *(.tests*)
+    }
+#endif
+
     __kernel_end__ = . - KERNEL_VIRTUAL_BASE;
     __kernel_virt_end__ = .;
 
     /DISCARD/ :{
         *(.comment)
     	*(.eh_frame)
+#ifndef __TEST__
+        *(.tests*)
+#endif
     }
 }

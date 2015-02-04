@@ -48,6 +48,7 @@
           </df>
           <in>assert.h</in>
           <in>ctype.h</in>
+          <in>debug.h</in>
           <in>defs.h</in>
           <in>interrupt.h</in>
           <in>kernel.h</in>
@@ -80,6 +81,12 @@
       <df name="scripts">
         <in>debug.bochs.sh</in>
         <in>test.sh</in>
+      </df>
+      <df name="tests">
+        <df name="lib">
+          <in>string.c</in>
+        </df>
+        <in>sources.mk</in>
       </df>
     </df>
     <logicalFolder name="ExternalFiles"
@@ -185,6 +192,8 @@
       </item>
       <item path="include/flos/ctype.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="include/flos/debug.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="include/flos/defs.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/flos/interrupt.h" ex="false" tool="3" flavor2="0">
@@ -228,6 +237,10 @@
       <item path="scripts/debug.bochs.sh" ex="false" tool="3" flavor2="0">
       </item>
       <item path="scripts/test.sh" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/lib/string.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="tests/sources.mk" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

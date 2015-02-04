@@ -39,6 +39,7 @@ $(addprefix configure-debug-,$(x86-rules)):
 		--ccp=$(subst configure-debug-,,$@)-elf- \
 		--config=bochs \
 		--debug \
+		--test \
 		--features=SERIALLOG \
 		--force
 		
