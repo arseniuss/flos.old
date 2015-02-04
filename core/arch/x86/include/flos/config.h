@@ -20,15 +20,20 @@
  *                      |                                           |
  * KERNEL_MODULES_START +-------------------------------------------+ v + ?
  *                      |                                           |
+ *                      |                                           |
+ *                      |               ^ grows up ^                |
+ *                      |            (kernel memory pool)           |
  * KERNEL_STACK_START   +-------------------------------------------+ v + 4 MB
+ *                      |              (kernel stack)               |
+ *                      |              V grows down V               |
+ *                      |                                           |
+ *                      |                                           |
+ *                      |  __kernel_virt_end__ = .                  |
+ *                      |                                           |
  *                      | __kernel_bss_end = .                      |
  *                      | SECTION .bss                              |
  *                      | __kernel_bss_start__ = .                  |
- *                      |            v grows down v                 |
  *                      |                                           |
- *                      |                   ...                     |
- *                      |                                           |
- *                      |             ^ grows up ^                  |
  *                      | __kernel_data_end__ = .                   |
  *                      | SECTION .data                             |
  *                      | SECTION .kmodules - internal modules      |
@@ -43,6 +48,8 @@
  *                      | __kernel_text_end__ = .                   |
  *                      | SECTION .text                             |
  *                      | __kernel_text_start__ = .                 |
+ *                      |                                           |
+ *                      | __kernel_virt_start__ = .                 |
  * KERNEL_CODE_START    +-------------------------------------------+ 0xF0400000
  *                      |                                           |
  *                      |    (reserved for kernel page structs)     |
@@ -89,6 +96,9 @@
 #    define KERNEL_STACK_START      (KERNEL_CODE_START + 0x00400000)
 
 #    define USER_VIRTUAL_START      0x00800000
+
+#    define KERNEL_POOL_START           (KERNEL_CODE_START + 0x00400000)
+#    define KERNEL_INITIAL_POOL_SIZE    0x00100000
 
 /*
  * Global Descriptor Table:

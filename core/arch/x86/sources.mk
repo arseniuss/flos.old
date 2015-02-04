@@ -17,5 +17,7 @@ sources += \
 	arch/x86/init/idt.S \
 	arch/x86/init/idt.c \
 	arch/x86/init/kmain.c \
+	arch/x86/mem/paging.c \
+	arch/x86/mem/pool.c \
 	arch/x86/proc/timer.c
 

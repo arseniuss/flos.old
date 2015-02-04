@@ -16,6 +16,7 @@
               </df>
               <df name="mem">
                 <in>paging.h</in>
+                <in>pool.h</in>
               </df>
               <in>config.h</in>
             </df>
@@ -24,6 +25,10 @@
             <in>idt.S</in>
             <in>idt.c</in>
             <in>kmain.c</in>
+          </df>
+          <df name="mem">
+            <in>paging.c</in>
+            <in>pool.c</in>
           </df>
           <df name="proc">
             <in>timer.c</in>
@@ -38,6 +43,9 @@
       </df>
       <df name="include">
         <df name="flos">
+          <df name="mem">
+            <in>tlsf.h</in>
+          </df>
           <in>assert.h</in>
           <in>ctype.h</in>
           <in>defs.h</in>
@@ -64,7 +72,6 @@
       <df name="mem">
         <in>alloc.c</in>
         <in>tlsf.c</in>
-        <in>tlsf.h</in>
       </df>
       <df name="proc">
         <in>interrupts.c</in>
@@ -156,11 +163,17 @@
       </item>
       <item path="arch/x86/include/flos/mem/paging.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="arch/x86/include/flos/mem/pool.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="arch/x86/init/idt.S" ex="false" tool="4" flavor2="0">
       </item>
       <item path="arch/x86/init/idt.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="arch/x86/init/kmain.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="arch/x86/mem/paging.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="arch/x86/mem/pool.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="arch/x86/proc/timer.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -181,6 +194,8 @@
       <item path="include/flos/kprintf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/flos/list.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="include/flos/mem/tlsf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="include/flos/process.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -205,8 +220,6 @@
       <item path="mem/alloc.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="mem/tlsf.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="mem/tlsf.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="proc/interrupts.c" ex="false" tool="0" flavor2="0">
       </item>

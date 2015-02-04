@@ -58,6 +58,7 @@
 #    ifndef __PREPROCESSING__
 
 #        include <flos/types.h>
+#        include <flos/kprintf.h>
 
 /** Structure pushed by interrupt handler to stack */
 struct iregs {
@@ -66,5 +67,19 @@ struct iregs {
     u32 int_no, err_code;       //push byte
     u32 eip, cs, eflags, esp3, ss3; //default
 };
+
+static inline void dump_regs(struct iregs *regs) {
+    kinfof("regs @ %P\n", regs);
+    kinfof("regs @ %P\n", regs);
+    kinfof("\teax:%08x ebx:%08x ecx:%08x edx:%08x\n",
+           regs->eax, regs->ebx, regs->ecx, regs->edx);
+    kinfof("\tcs:%x ds:%x es:%x fs:%x gs:%x ss:%x\n",
+           regs->cs, regs->ds, regs->es, regs->fs, regs->gs, regs->ss);
+    kinfof("\tesi:%08x edi:%08x ebp:%08x eip:%08x esp:%08x\n",
+           regs->esi, regs->edi, regs->ebp, regs->eip, regs->esp);
+    kinfof("\teflags:%b int:%x ierr:%08x esp3:%08x ss3:%08x\n",
+           regs->eflags, regs->int_no, regs->err_code, regs->esp3, regs->ss3);
+}
+
 #    endif /* !__PREPROCESSING__ */
 #endif /* !__flos_x86__REGISTERS_H__ */

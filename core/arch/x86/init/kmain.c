@@ -10,9 +10,11 @@
 
 #include <flos/arch/descriptors.h>
 #include <flos/defs.h>
-#include <flos/kernel.h>
-#include <flos/string.h>
 #include <flos/interrupt.h>
+#include <flos/kernel.h>
+#include <flos/mem/paging.h>
+#include <flos/mem/pool.h>
+#include <flos/string.h>
 
 void log_header(const char *fmt, ...) {
     char buf[MAX_CHAR_BUF_LEN];
@@ -35,9 +37,12 @@ int kmain() {
     kinfof("============================================================\n");
 
     init_interrupts();
+
     init_idt();
 
-    init_timer();
+    init_pool();
+
+    init_memory();
 
     return 0;
 }

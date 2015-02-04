@@ -11,6 +11,8 @@
 #ifndef __flos__MEM_TLSF_H__
 #    define __flos__MEM_TLSF_H__
 
+#    include <flos/types.h>
+
 typedef void *tlsf_t;
 typedef void *pool_t;
 
@@ -32,6 +34,5 @@ void tlsf_walk_pool(pool_t pool, tlsf_walker walker, void *user);
 /* Returns nonzero if any internal consistency check fails. */
 int tlsf_check(tlsf_t tlsf);
 int tlsf_check_pool(pool_t pool);
-
 
 #endif /* !__flos__MM_TLSF_H__ */

@@ -20,8 +20,6 @@ struct interrupt_handle timer_int = {
 };
 
 int timer_interrupt_handler(struct iregs *regs) {
-    kprintf("Handling timer\n");
-
     return 1;
 }
 

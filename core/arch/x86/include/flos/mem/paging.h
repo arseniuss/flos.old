@@ -8,8 +8,8 @@
  * @copyright see file LICENSE
  */
 
-#ifndef __flos_x86__PAGING__
-#    define __flos_x86__PAGING__
+#ifndef __flos_x86__PAGING_H__
+#    define __flos_x86__PAGING_H__
 
 #    include <flos/defs.h>
 #    include <flos/types.h>
@@ -60,6 +60,8 @@
 
 /** @} */
 
+#    define PAGE_FAULT_INTERRUPT            0x0E
+
 typedef u32 pte_t;
 typedef u32 pde_t;
 
@@ -68,11 +70,12 @@ struct page_table {
     pte_t entry[1024] __align(4096);
 } __packed;
 
-
 /** Page directory structure */
 struct page_directory {
     pde_t entry[1024] __align(4096);
     struct page_table *table;
 } __packed;
 
-#endif /* __flos_x86__PAGING__ */
+void init_memory();
+
+#endif /* __flos_x86__PAGING_H__ */

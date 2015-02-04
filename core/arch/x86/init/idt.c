@@ -97,19 +97,17 @@ struct iregs *irq_handler(struct iregs *regs) {
 }
 
 struct iregs *isr_handler(struct iregs *regs) {
-    u32 fault_addr;
+    struct interrupt_handle *pos;
 
-    kprintf("ISR: %p %s ", regs->eip, exception_messages[regs->int_no]);
-
-    switch (regs->int_no) {
-        case 14:
-          __asm("mov %%cr2, %0":"=r"(fault_addr));
-
-            kprintf("@ %p\n", fault_addr);
-            break;
+    list_for_each_entry(pos, &interrupt_handler[regs->int_no], ihandle_list) {
+        if(pos->ihandle_func(regs) > 0)
+            return regs;
     }
 
-    for(;;);
+    kcritf("Unresolved exception: %s\n", exception_messages[regs->int_no]);
+    dump_regs(regs);
+
+    while(1);
 
     return regs;
 }
