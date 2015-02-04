@@ -104,7 +104,8 @@ struct iregs *isr_handler(struct iregs *regs) {
             return regs;
     }
 
-    kcritf("Unresolved exception: %s\n", exception_messages[regs->int_no]);
+    kcritf("Unresolved exception no. %d: %s\n", regs->int_no,
+           exception_messages[regs->int_no]);
     dump_regs(regs);
 
     while(1);

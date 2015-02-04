@@ -71,7 +71,7 @@ _start:
     mov edx, kernel_page_directory - KERNEL_VIRTUAL_BASE
     mov dword [edx], eax
     mov dword [edx + 4], ebx
-    mov edx, kernel_page_directory + (KERNEL_VIRTUAL_BASE >> 22) * 4 - KERNEL_VIRTUAL_BASE 
+    mov edx, kernel_page_directory + (KERNEL_VIRTUAL_BASE >> 22) * 4 - KERNEL_VIRTUAL_BASE
     mov dword [edx], eax
     mov dword [edx + 4], ebx
     jmp .1
@@ -128,7 +128,8 @@ _start:
 
 _higher_start:
 extern kmain
-    mov esp, KERNEL_STACK_START
+    /* Since stack borders memory pool offset is needed to avoid overflow */
+    mov esp, (KERNEL_STACK_START - 8)
 
     call kmain
 

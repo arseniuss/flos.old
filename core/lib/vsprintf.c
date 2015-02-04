@@ -222,6 +222,11 @@ int format_decode(const char *fmt, struct printf_spec *spec) {
             /*
              * integer number formats - set up the flags and "break"
              */
+        case 'b':
+            spec->flags |= FLAG_SMALL;
+        case 'B':
+            spec->base = 2;
+            break;
         case 'o':
             spec->flags |= FLAG_SMALL;
         case 'O':
@@ -287,6 +292,10 @@ char *number(char *buf, char *end, unsigned long long num,
     int need_prefix = ((spec.flags & FLAG_SPEC) && spec.base != 10);
 
     /*
+     * TODO: We are using simplified version so needed padding is not printed 
+     */
+
+    /*
      * Determent sign printing
      */
     sign = 0;
@@ -326,21 +335,6 @@ char *number(char *buf, char *end, unsigned long long num,
         num = num / spec.base;
     } while(num != 0);
 
-    if(width > spec.precision)
-        spec.precision = width;
-    spec.width -= width;
-
-    /*
-     * If not fill with zeros or left justify
-     */
-    if(!(spec.flags & (FLAG_ZERO + FLAG_LEFT))) {
-        while(--spec.width >= 0) {
-            if(buf < end)
-                *buf = ' ';
-            buf++;
-        }
-    }
-
     /*
      * Sign
      */
@@ -373,44 +367,11 @@ char *number(char *buf, char *end, unsigned long long num,
     }
 
     /*
-     * Zero or space padding
-     */
-    if(!(spec.flags & FLAG_LEFT)) {
-        char c = (spec.flags & FLAG_ZERO) ? '0' : ' ';
-        while(--spec.width >= 0) {
-            if(buf < end)
-                *buf = c;
-            ++buf;
-        }
-    }
-
-    /*
-     * Precision padding 
-     */
-#if 0
-    while(width <= spec.precision--) {
-        assert(buf < end);
-        if(buf < end)
-            *buf = '0';
-        ++buf;
-    }
-#endif
-
-    /*
      * Buffer with number
      */
     for(; *no; ++no) {
         if(buf < end)
             *buf = *no;
-        ++buf;
-    }
-
-    /*
-     * Trailing space
-     */
-    while(--spec.width >= 0) {
-        if(buf < end)
-            *buf = ' ';
         ++buf;
     }
 

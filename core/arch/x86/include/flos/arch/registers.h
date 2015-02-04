@@ -59,8 +59,13 @@
 
 #        include <flos/types.h>
 #        include <flos/kprintf.h>
+#        include <flos/config.h>
 
-/** Structure pushed by interrupt handler to stack */
+/**
+ * Structure pushed by interrupt handler to stack
+ *
+ * esp3 and ss3 may not be pushed into stack if interrupt comes from kernel space
+ */
 struct iregs {
     u32 ss, gs, fs, es, ds;     //push xs
     u32 edi, esi, ebp, esp, ebx, edx, ecx, eax; //pusha
@@ -69,16 +74,20 @@ struct iregs {
 };
 
 static inline void dump_regs(struct iregs *regs) {
-    kinfof("regs @ %P\n", regs);
-    kinfof("regs @ %P\n", regs);
+    kinfof("regs @ %p\n", regs);
     kinfof("\teax:%08x ebx:%08x ecx:%08x edx:%08x\n",
            regs->eax, regs->ebx, regs->ecx, regs->edx);
     kinfof("\tcs:%x ds:%x es:%x fs:%x gs:%x ss:%x\n",
            regs->cs, regs->ds, regs->es, regs->fs, regs->gs, regs->ss);
     kinfof("\tesi:%08x edi:%08x ebp:%08x eip:%08x esp:%08x\n",
            regs->esi, regs->edi, regs->ebp, regs->eip, regs->esp);
-    kinfof("\teflags:%b int:%x ierr:%08x esp3:%08x ss3:%08x\n",
-           regs->eflags, regs->int_no, regs->err_code, regs->esp3, regs->ss3);
+    kinfof("\teflags:%b int:%X ierr:%08X\n",
+           regs->eflags, regs->int_no, regs->err_code);
+    /*
+     * If interrupt comes from user space 
+     */
+    if(regs->eip < KERNEL_VIRTUAL_BASE)
+        kinfof("\tesp3:%08x ss3:%08x\n", regs->esp3, regs->ss3);
 }
 
 #    endif /* !__PREPROCESSING__ */

@@ -30,7 +30,7 @@ int page_fault_handler(struct iregs *regs) {
     int reserved = regs->err_code & 0x08;
     int id = regs->err_code & 0x10;
 
-    kcritf("Page fault @ %P ", fault_address);
+    kcritf("Page fault @ %p ", fault_address);
     if(!present)
         kcritf("!present ");
     if(rw)
