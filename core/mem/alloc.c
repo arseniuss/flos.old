@@ -13,6 +13,7 @@
 #include <flos/mem/pool.h>
 #include <flos/mem/tlsf.h>
 #include <flos/mem/tlsf.h>
+#include <flos/string.h>
 #include <flos/vaargs.h>
 
 void *kmalloc(size_t sz, int flags, ...) {
@@ -41,6 +42,9 @@ void *kmalloc(size_t sz, int flags, ...) {
 
     if(flags & KMALLOC_PHYS) {
         //TODO: *phys = phys(ret);
+    }
+    if(flags & KMALLOC_ZERO) {
+        memset(ret, 0, sz);
     }
 
     return ret;

@@ -17,6 +17,7 @@
 enum alloc_type {
     KMALLOC_ALIGNED,
     KMALLOC_PHYS,
+    KMALLOC_ZERO
 };
 
 /**

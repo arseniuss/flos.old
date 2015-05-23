@@ -1,8 +1,8 @@
 # _flos_ operating system #
 
-_flos_ is Plan9, Unix and Xok/Aegis inspired hobby operating system. This 
-project haven't its specification but just ideas which may be useful in future 
-versions. This repository contains implementation of kernel and 
+_flos_ is Plan9, Unix and Xok/Aegis inspired hobby operating system. This
+project haven't its specification but just ideas which may be useful in future
+versions. This repository contains implementation of kernel and
 some libraries.
 I hope that I won't abandon this project like I did with old one (my bad).
 
@@ -62,4 +62,3 @@ Some code is licensed under beerware license :)
 ## Author ##
 
 Armands Skolmeisters (Arseniuss) <[arseniuss@arseniuss.id.lv](mailto:arseniuss@arseniuss.id.lv)>
-

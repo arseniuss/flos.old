@@ -1,5 +1,5 @@
 /**
- * @file    debug/kprintf.c    
+ * @file    debug/kprintf.c
  * @brief   Kernel print (logging) function
  * @version 1.0
  * @date    13.12.2014.

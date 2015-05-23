@@ -20,7 +20,7 @@ KERNEL_PATCH = 0
 KERNEL_NAME = "Cetraria Islandica"
 
 includes = include
-sources = 
+sources =
 defines = KERNEL
 
 ifeq ("$(wildcard ./config.mk)","")
@@ -54,9 +54,9 @@ DEFINES += $(addsuffix =1,$(addprefix CONFIG_,$(config)))
 defines += $(arch) $(platform) $(features)
 
 # Temporary directory
-TMP = tmp-$(arch)
+TMP = $(CURDIR)/tmp-$(arch)
 # Target binary
-TARGET = kernel.$(arch).elf
+TARGET = $(CURDIR)/kernel.$(arch).elf
 
 # Reforming lists
 INCLUDES    := $(addprefix -I,$(includes))
@@ -68,10 +68,10 @@ DEFINES	    := $(addprefix -D__,$(addsuffix __=1,$(defines))) \
 CFLAGS = $(INCLUDES) $(DEFINES)
 CPPFLAGS = $(INCLUDES) $(DEFINES)
 PPFLAGS = $(INCLUDES) $(DEFINES)
-    	   
+
 # Source flags
 	# Enables all warnings
-	FLAGS += -Wall 
+	FLAGS += -Wall
 	# Enable stack protector warnings
 	FLAGS += -Wstack-protector
 	# Ignore unused attributes
@@ -91,7 +91,7 @@ PPFLAGS = $(INCLUDES) $(DEFINES)
 	# Using 2011 C ISO standard
 	CFLAGS += -std=c11
 	CFLAGS += -fplan9-extensions
-	
+
 CFLAGS += $(FLAGS)
 CPPFLAGS += $(FLAGS)
 
@@ -103,7 +103,7 @@ CPPFLAGS += $(FLAGS)
 	# Add all symbols to dynamic symbol table
 	LDFLAGS += --export-dynamic
 	# Print kernel map
-	LDFLAGS += -Map $(TMP)/$(TARGET).map
+	LDFLAGS += -Map $(TMP)/kernel.$(arch).elf.map
 
 # Dumper flags
 	# Disassemble all
@@ -119,27 +119,29 @@ objects	:= $(addprefix $(TMP)/,$(objects))
 dump	= $(addsuffix .dump,$(objects))
 deps	:= $(addsuffix .dep,$(objects))
 
+sources := $(addprefix $(CURDIR)/,$(sources))
+
 all: $(TARGET)
-	
+
 $(TARGET): $(objects)
 	@ /bin/echo -e "\t LD $(TARGET)  $(RED)"
 	@ mkdir -p $(TMP)/arch/$(arch)
 	@ $(PP) $(PPFLAGS) -P arch/$(arch)/linker.ld > $(TMP)/arch/$(arch)/linker.ld
 	@ $(LD) $(LDFLAGS) -T $(TMP)/arch/$(arch)/linker.ld -o $@ $(objects) \
 	$(shell $(CC) -print-libgcc-file-name)
-	@ $(DUMP) $(DUMPFLAGS) $@ > $(TMP)/$@.dump
+	@ $(DUMP) $(DUMPFLAGS) $@ > $(TMP)/$(notdir $@.dump)
 	@ /bin/echo -e -n "$(OK)"
-	
-$(TMP)/%.c.o: %.c
+
+$(TMP)/%.c.o: $(CURDIR)/%.c
 	@ /bin/echo -e "\t C $(notdir $<) $(notdir $@) $(RED)"
 	@ mkdir -p $(dir $@)
 	@ $(CC) $(CFLAGS) -E $< > $@.E
-	@ $(CC) $(CFLAGS) -c -o $@ $<
+	@   $(CC) $(CFLAGS) -c -o $@ $<
 	@ $(CC) $(CFLAGS) -M -MT $@  $< > $@.dep
 	@ $(DUMP) $(DUMPFLAGS) $@ > $@.dump
 	@ /bin/echo -e -n "$(OK)"
 
-$(TMP)/%.cpp.o: %.cpp
+$(TMP)/%.cpp.o: $(CURDIR)/%.cpp
 	@ /bin/echo -e  "\t CPP $(notdir $<) $(notdir $@) $(RED)"
 	@ mkdir -p $(dir $@)
 	@ $(CPP) $(CPPFLAGS) -c -o $@ $<
@@ -148,20 +150,20 @@ $(TMP)/%.cpp.o: %.cpp
 	@ $(DUMP) $(DUMPFLAGS) $(TMP)/$@ > $@.dump
 	@ /bin/echo -e -n "$(OK)"
 
-$(TMP)/%.asm.o: %.asm
+$(TMP)/%.asm.o: $(CURDIR)/%.asm
 	@ /bin/echo -e "\t ASM $(notdir $<) $(notdir $@) $(RED)"
 	@ mkdir -p $(dir $@)
 	@ $(ASM) $(ASMFLAGS) -c -o $@ $<
 	@ $(DUMP) $(DUMPFLAGS) $@ > $@.dump
 	@ /bin/echo -e -n "$(OK)"
 
-$(TMP)/%.S.o: %.S
+$(TMP)/%.S.o: $(CURDIR)/%.S
 	@ /bin/echo -e "\t ASM $(notdir $<) $(notdir $@) $(RED)"
 	@ mkdir -p $(dir $@)
-	@ $(PP) $(PPFLAGS) $< > $(TMP)/$<.asm
+	@ $(PP) $(PPFLAGS) $< > $@.asm
 	@ $(PP) -M -MT $@ $(PPFLAGS) $< > $@.dep
 	@ $(PP) $(PPFLAGS) -E $< > $@.E
-	@ $(ASM) $(ASMFLAGS) -o $@ $(TMP)/$<.asm
+	@ $(ASM) $(ASMFLAGS) -o $@ $@.asm
 	@ $(DUMP) $(DUMPFLAGS) $@ > $@.dump
 	@ /bin/echo -e -n "$(OK)"
 
@@ -176,22 +178,21 @@ show-sources:
 
 show-objects:
 	@ echo $(objects)
-	
+
 show-configs:
 	@ echo $(config)
-	
+
 show-defines:
 	@ echo $(defines)
-	
+
 show-CONFIG:
 	@ echo $(CONFIG)
-	
+
 show-DEFINES:
 	@ echo $(DEFINES)
-	
+
 show-tools:
 	@ echo "Assembler $(ASM)"
 	@ echo "C compiler $(CC)"
 
 -include $(deps)
-

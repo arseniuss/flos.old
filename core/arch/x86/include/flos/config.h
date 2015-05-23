@@ -177,4 +177,7 @@
 /** Kernel context switch frequency in HZ */
 #    define KERNEL_FREQ                 100
 
+/** Frame types: 4 GB 4 MB 4 GB */
+#    define FRAME_TYPE_COUNT            3
+
 #endif /* __flos_x86__config_h__ */

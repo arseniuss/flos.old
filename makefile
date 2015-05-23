@@ -14,6 +14,8 @@ x86-rules = i386 i486 i586 i686
 
 .PHONY: core
 
+all: core
+
 x86: | tools-i686 configure-i686 core
 i386: | tools-i386 configure-i386 core
 i486: | tools-i486 configure-i486 core
@@ -22,6 +24,7 @@ i686: | tools-i686 configure-i686 core
 
 tools-%:
 	cd gcc-cc; export ARCHES=$(subst tools-,,$@); ./doit
+	touch $@
 
 $(addprefix configure-,$(x86-rules)):
 	. gcc-cc/toolvers && \
@@ -30,7 +33,7 @@ $(addprefix configure-,$(x86-rules)):
 		--cc=gcc-cc/$(subst configure-,,$@)-elf-$$GCCVER-`uname`-`uname -m` \
 		--ccp=$(subst configure-,,$@)-elf- \
 		--force
-		
+
 $(addprefix configure-debug-,$(x86-rules)):
 	. gcc-cc/toolvers && \
 	./configure \
@@ -42,12 +45,16 @@ $(addprefix configure-debug-,$(x86-rules)):
 		--test \
 		--features=SERIALLOG \
 		--force
-		
+
 core:
 	@ make -C core
 
 clean:
+	make -C core clean
+
+clear:
 	cd gcc-cc; ./cleanit
 	rm -vf config.mk
 	rm -vf core/config.mk
-	make -C core clean
+	make -C core clear
+	rm tools-*
