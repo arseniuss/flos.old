@@ -15,6 +15,12 @@
 #    include <flos/list.h>
 #    include <flos/arch/registers.h>
 
+#    define IRQ(x)                  (IRQ_OFFSET_MASTER + x)
+
+#    define INTERRUPT_HANDLED       1
+#    define INTERRUPT_NOT_HANDLED   0
+#    define INTERRUPT_HANDLE_ERROR  -1
+
 /**
  * Interrupt handler function
  * @return positive if handled, negative if error, 0 - not handled

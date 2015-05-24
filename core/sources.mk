@@ -20,6 +20,7 @@ sources +=  \
     mem/alloc.c \
     mem/frames.c \
     mem/tlsf.c \
+	module/init.c \
     proc/interrupts.c \
     proc/sched.c
 

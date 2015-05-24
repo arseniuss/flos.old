@@ -20,7 +20,7 @@ struct interrupt_handle timer_int = {
 };
 
 int timer_interrupt_handler(struct iregs *regs) {
-    return 1;
+    return INTERRUPT_HANDLED;
 }
 
 int init_timer() {
@@ -28,9 +28,9 @@ int init_timer() {
 
     pit_timer_phase(KERNEL_FREQ);
 
-    register_interrupt(IRQ_OFFSET_MASTER, &timer_int);
+    register_interrupt(IRQ(0), &timer_int);
 
-    kinfof(" OK\n");
+    kinfof("OK\n");
 
     return 0;
 }

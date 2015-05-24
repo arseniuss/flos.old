@@ -85,11 +85,19 @@ int init_idt() {
 struct iregs *irq_handler(struct iregs *regs) {
     int irq = regs->int_no - IRQ_OFFSET_MASTER;
     struct interrupt_handle *pos;
+    int handled = INTERRUPT_NOT_HANDLED;
 
     list_for_each_entry(pos, &interrupt_handler[regs->int_no], ihandle_list) {
-        if(pos->ihandle_func(regs) > 0)
+        handled = pos->ihandle_func(regs);
+
+        if(handled <= INTERRUPT_HANDLE_ERROR)
+            kerrorf("Error while handing IRQ%d\n", irq);
+        if(handled >= INTERRUPT_HANDLED)
             break;
     }
+
+    if(handled <= INTERRUPT_NOT_HANDLED)
+        kdebugf("IRQ%d is not handled\n", irq);
 
     pic_eoi(irq);
 

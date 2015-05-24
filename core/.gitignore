@@ -2,7 +2,7 @@ bootgrub.gz
 *.img
 mnt
 kernel.elf
-config.mk
+core/config.mk
 tmp-*
 nbproject/private
 *.elf

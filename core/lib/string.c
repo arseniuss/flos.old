@@ -1,5 +1,5 @@
 /**
- * @file    lib/string.c    
+ * @file    lib/string.c
  * @brief   String functions
  * @version 1.0
  * @date    14.12.2014.
@@ -16,7 +16,7 @@ size_t strnlen(const char *s, size_t count) {
 
     for(sc = s; count-- && *sc != '\0'; ++sc)
         /*
-         * nothing 
+         * nothing
          */ ;
     return sc - s;
 }
@@ -26,7 +26,7 @@ size_t strlen(const char *s) {
 
     for(sc = s; *sc != '\0'; ++sc)
         /*
-         * nothing 
+         * nothing
          */ ;
 
     return sc - s;
@@ -64,4 +64,13 @@ void *memset(void *dst, int c, unsigned int n) {
         *d++ = (char)c;
 
     return dst;
+}
+
+int strcmp(const char *s1, const char *s2) {
+    while((*s1) && (*s1 == *s2)) {
+        ++s1;
+        ++s2;
+    }
+
+    return (*s1 - *s2);
 }

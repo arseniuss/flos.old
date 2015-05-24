@@ -11,6 +11,7 @@
 #include <flos/list.h>
 #include <flos/config.h>
 #include <flos/interrupt.h>
+#include <flos/assert.h>
 
 struct list_head interrupt_handler[INTERRUPT_COUNT];
 
@@ -23,6 +24,9 @@ int init_interrupts() {
 }
 
 void register_interrupt(int no, struct interrupt_handle *handle) {
+    assert(handle);
+    assert(handle->ihandle_func);
+
     list_add(&handle->ihandle_list, &interrupt_handler[no]);
 }
 

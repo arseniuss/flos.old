@@ -15,7 +15,6 @@ global isr%1
 
 isr%1:
     cli
-.1:  jmp .1
     push byte 0
     push byte %1
     jmp isr_common_stub

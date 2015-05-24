@@ -15,6 +15,7 @@
 #include <flos/mem/paging.h>
 #include <flos/mem/pool.h>
 #include <flos/string.h>
+#include <flos/module.h>
 
 void log_header(const char *fmt, ...) {
     char buf[MAX_CHAR_BUF_LEN];
@@ -40,11 +41,15 @@ int kmain() {
 
     init_idt();
 
+    init_timer();
+
     init_frames();
 
     init_memory();
 
     init_pool();
+
+    init_modules();
 
     return 0;
 }

@@ -101,7 +101,7 @@ SECTIONS {
         __kernel_test_ctors_start__ = .;
         *(SORT(.tests.ctors*))
         __kernel_test_ctors_end__ = .;
-        
+
         __kernel_test_dtors_start__ = .;
         *(SORT(.tests.dtors*))
         __kernel_test_dtors_end__ = .;
@@ -116,6 +116,7 @@ SECTIONS {
     /DISCARD/ :{
         *(.comment)
     	*(.eh_frame)
+        *(.debug*)
 #ifndef __TEST__
         *(.tests*)
 #endif
