@@ -17,7 +17,7 @@
 #    include <flos/defs.h>
 
 #    ifndef _BITMAP_FIELD_BITS
-#        define _BITMAP_FIELD_BITS          8
+#        define _BITMAP_FIELD_BITS          32
 #    endif
 
 #    define _BITMAP_FIELD_TYPE              CONCAT(u, _BITMAP_FIELD_BITS)
@@ -53,9 +53,15 @@ static inline int bitmap_alloc(struct bitmap *bm, int bits) {
     return 0;
 }
 
+/**
+ * Set bitmap to occupy specific memory location
+ * @param bm   pointer to bitmap structure
+ * @param ptr  pointer to memory location
+ * @param size size of memory location
+ */
 static inline void bitmap_occupy(struct bitmap *bm, void *ptr, size_t size) {
     bm->map = ptr;
-    bm->bits = size / 8;
+    bm->bits = size * 8;
     bm->size = size;
 
     memset(ptr, 0, size);

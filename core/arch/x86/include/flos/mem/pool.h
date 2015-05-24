@@ -17,4 +17,6 @@ extern tlsf_t kernel_pool;
 
 void init_pool();
 
+void init_frames();
+
 #endif /* __flos_x86__POOL_H__ */

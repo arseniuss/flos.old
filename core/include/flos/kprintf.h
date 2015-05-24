@@ -1,5 +1,5 @@
 /**
- * @file    include/flos/kprintf.h   
+ * @file    include/flos/kprintf.h
  * @brief   Kernel logging function
  * @version 1.0
  * @date    13.12.2014.

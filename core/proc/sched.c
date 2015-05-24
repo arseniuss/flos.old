@@ -13,8 +13,6 @@
 #include <flos/kprintf.h>
 #include <flos/process.h>
 
-struct process *current;
-
 struct list_head sched_list[PRIORITY_COUNT];
 struct list_head selected_list = LIST_HEAD_INIT(selected_list);
 int current_list = 0;

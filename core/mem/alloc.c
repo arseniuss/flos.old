@@ -12,14 +12,14 @@
 #include <flos/kernel.h>
 #include <flos/mem/pool.h>
 #include <flos/mem/tlsf.h>
-#include <flos/mem/tlsf.h>
 #include <flos/string.h>
 #include <flos/vaargs.h>
+#include <flos/mem/phys.h>
 
 void *kmalloc(size_t sz, int flags, ...) {
     va_list args;
     u32 align = 0;
-    addr_t *phys;
+    addr_t *p;
     void *ret = NULL;
 
     va_start(args, flags);
@@ -27,7 +27,7 @@ void *kmalloc(size_t sz, int flags, ...) {
         align = va_arg(args, u32);
     }
     if(flags & KMALLOC_PHYS) {
-        phys = va_arg(args, addr_t *);
+        p = va_arg(args, addr_t *);
     }
     va_end(args);
 
@@ -41,7 +41,7 @@ void *kmalloc(size_t sz, int flags, ...) {
         return NULL;
 
     if(flags & KMALLOC_PHYS) {
-        //TODO: *phys = phys(ret);
+        *p = phys(ret);
     }
     if(flags & KMALLOC_ZERO) {
         memset(ret, 0, sz);

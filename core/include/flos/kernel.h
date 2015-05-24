@@ -29,6 +29,7 @@ enum alloc_type {
  * @return pointer to allocated chunk or NULL
  */
 void *kmalloc(size_t sz, int flags, ...);
+void *early_kmalloc(size_t sz, int flags, ...);
 void kmfree(void *ptr);
 
 #endif /* __flos__KERNEL_H__ */

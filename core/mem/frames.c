@@ -29,17 +29,9 @@
 #include <flos/kprintf.h>
 #include <flos/kernel.h>
 #include <flos/config.h>
+#include <flos/mem/phys.h>
 
-struct frame {
-    addr_t phys_addr;           // physical address of frame
-    struct bitmap bitmap;       // bitmap structure
-    struct frame *up;           // upper frame
-
-    struct frame *frames[];
-};
-
-struct frame *root;
-extern size_t frame_sizes[FRAME_TYPE_COUNT];
+struct frame *root = NULL;
 
 /**
  * Allocate frame
@@ -58,17 +50,17 @@ addr_t frame_alloc(int size_no) {
             }
 
             /*
-             * This frame is full -- mark bit in upper frame 
+             * This frame is full -- mark bit in upper frame
              */
             if(old_entry != -1)
                 bitmap_set(&pos->up->bitmap, old_entry);
             /*
-             * Go back to upper frame 
+             * Go back to upper frame
              */
             lvl++;
             pos = pos->up;
         } else {
-            pos = pos->frames[entry];
+            pos = (*pos->frames)[entry];
             lvl--;
             old_entry = entry;
         }
@@ -81,5 +73,7 @@ addr_t frame_alloc(int size_no) {
 }
 
 void frame_free(addr_t addr, int size_no) {
+
+
 
 }

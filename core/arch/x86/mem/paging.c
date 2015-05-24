@@ -12,12 +12,51 @@
 #include <flos/mem/paging.h>
 #include <flos/interrupt.h>
 #include <flos/kprintf.h>
+#include <flos/process.h>
+#include <flos/assert.h>
+
+#define PAGE_SHIFT      12
+#define PAGE_SIZE       (1 << PAGE_SHIFT)
+#define PAGE_BITS       0x00000FFF
+#define PAGE_NOT_BITS   0xFFFFF000
+
+#define PDIR_SHIFT      22
+#define PDIR_SIZE       (1 << PDIR_SHIFT)
+#define PDIR_BITS       0x003FFFFF
+#define PDIR_NOT_BITS   0xFFC00000
+
+#define PDIR_IDX(x)     (((addr_t)x) >> PDIR_SHIFT)
+#define PTBL_IDX(x)     ((((addr_t)x) >> PAGE_SHIFT) & 0x3FF)
 
 int page_fault_handler(struct iregs *regs);
 
 struct interrupt_handle page_fault_handle = {
     &page_fault_handler
 };
+
+addr_t phys(void *addr) {
+    int pdir_idx = PDIR_IDX(addr);
+    int ptbl_idx = PTBL_IDX(addr);
+    struct page_directory *pd = current->arch->page_directory;
+    addr_t ret = 0;
+
+    assert(pd != NULL, "Error: current process do not have page directory!");
+
+    if(pd->entry[pdir_idx] & PDE_SIZE) {
+        ret = pd->entry[pdir_idx] & PDIR_NOT_BITS;
+        ret |= (addr_t) addr & PDIR_BITS;
+    } else {
+        struct page_table *pt = pd->table[ptbl_idx];
+
+        assert(pt != NULL,
+               "Error: current process do not have %d page table!", ptbl_idx);
+
+        ret = pt->entry[ptbl_idx] & PAGE_BITS;
+        ret |= (addr_t) addr & PAGE_NOT_BITS;
+    }
+
+    return ret;
+}
 
 int page_fault_handler(struct iregs *regs) {
     addr_t fault_address;

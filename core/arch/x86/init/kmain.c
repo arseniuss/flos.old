@@ -40,7 +40,7 @@ int kmain() {
 
     init_idt();
 
-    init_pool();
+    init_frames();
 
     init_memory();
 

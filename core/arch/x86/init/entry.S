@@ -182,6 +182,8 @@ loop:
 
 section .data
 
+global kernel_page_directory
+
 kernel_page_directory:
     times 1024 dd 0
     times 1024 dd 0
@@ -194,44 +196,43 @@ kernel_page_directory:
 
 kernel_gdt:
 ; First Segment, null
-                dw 0x0000   ;LowLimit
-                dw 0x0000   ;LowBase
-                db 0x00     ;MiddleBase
-                db 0x00     ;Access
-                db 0x00     ;Granularity
-                db 0x00     ;HighBase
+    dw 0x0000   ;LowLimit
+    dw 0x0000   ;LowBase
+    db 0x00     ;MiddleBase
+    db 0x00     ;Access
+    db 0x00     ;Granularity
+    db 0x00     ;HighBase
 ; Second segment, higher half kernel code
-                dw 0xFFFF
-                dw 0x0000
-                db 0x00
-                db 0x9A
-                db 0xCF
-                db 0x00
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 0x9A
+    db 0xCF
+    db 0x00
 ; Third segment, higher half kernel data
-                dw 0xFFFF
-                dw 0x0000
-                db 0x00
-                db 0x92
-                db 0xCF
-                db 0x00
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 0x92
+    db 0xCF
+    db 0x00
 ; Fourth segment, user data
-                dw 0xFFFF
-                dw 0x0000
-                db 0x00
-                db 0xFA
-                db 0xCF
-                db 0x00
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 0xFA
+    db 0xCF
+    db 0x00
 ; Fifth segment, user code
-                dw 0xFFFF
-                dw 0x0000
-                db 0x00
-                db 0xF2
-                db 0xCF
-                db 0x00
+    dw 0xFFFF
+    dw 0x0000
+    db 0x00
+    db 0xF2
+    db 0xCF
+    db 0x00
 ; Other
-                times (SEGMENT_COUNT - 5) dq 0
+    times (SEGMENT_COUNT - 5) dq 0
 
 kernel_gdt_ptr:
-                dw SEGMENT_SIZE - 1
-                dd kernel_gdt
-
+    dw SEGMENT_SIZE - 1
+    dd kernel_gdt

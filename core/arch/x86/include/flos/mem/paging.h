@@ -73,7 +73,7 @@ struct page_table {
 /** Page directory structure */
 struct page_directory {
     pde_t entry[1024] __align(4096);
-    struct page_table *table;
+    struct page_table *table[1024];
 } __packed;
 
 void init_memory();

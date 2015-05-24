@@ -12,6 +12,8 @@
 
 #    include <flos/arch/process.h>
 #    include <flos/types.h>
+#    include <flos/proc/arch.h>
+#    include <flos/list.h>
 
 struct process {
     pid_t pid;
@@ -20,6 +22,10 @@ struct process {
     u8 priority;
 
     struct list_head sched_list;
+
+    struct process_arch *arch;
 };
+
+extern struct process *current;
 
 #endif /* __flos__PROCESS_H__ */
