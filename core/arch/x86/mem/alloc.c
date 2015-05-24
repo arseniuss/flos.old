@@ -14,6 +14,8 @@
 #include <flos/string.h>
 #include <flos/defs.h>
 #include <flos/mem/phys.h>
+#include <flos/assert.h>
+#include <flos/mem/pool.h>
 
 extern char *__kernel_virt_end__;
 addr_t early_pool_bottom = 0;
@@ -23,6 +25,9 @@ void *early_kmalloc(size_t sz, int flags, ...) {
     u32 align = 0;
     addr_t *p;
     addr_t ret = NULL;
+
+    assert(kernel_pool == NULL,
+           "Error: cannot use early_kmalloc, memory pool exists!");
 
     va_start(args, flags);
     if(flags & KMALLOC_ALIGNED) {

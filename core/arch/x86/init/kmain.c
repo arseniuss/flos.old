@@ -44,5 +44,7 @@ int kmain() {
 
     init_memory();
 
+    init_pool();
+
     return 0;
 }
