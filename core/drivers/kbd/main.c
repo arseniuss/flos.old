@@ -51,16 +51,13 @@ int kbd_init() {
 }
 
 int kbd_interrupt(struct iregs *regs) {
-
-    kdebugf("keyboard interrupt");
-
     inb(DATA_PORT);
 
     return INTERRUPT_HANDLED;
 }
 
 void kbd_exit() {
-
+    unregister_interrupt(IRQ(1), &kbd_interrupt_handle);
 }
 
 INTERNAL_MODULE(kdb_module);

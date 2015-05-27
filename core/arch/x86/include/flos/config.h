@@ -14,27 +14,38 @@
 /*
  * Virtual Memory Map:
  *
- *      4 GB            +-------------------------------------------+
- *                      |                                           |
- *                      |           (kernel modules)                |
- *                      |                                           |
- * KERNEL_MODULES_START +-------------------------------------------+ v + ?
+ *      4 GB            +-------------------------------------------+ 0xFFFFFFFF
+ *                      |                                           | \
+ *                      |       (unallocated protection page)       |  | 4 KB
+ *                      |                                           | /
+ *                      +------------------------------------------ + 0xFFFFE000
+ *                      |                                           | \
+ *                      |                                           |  |
+ *                      |                                           |  | ~240 MB
+ *                      |               ^ grows up ^                |  |
+ *                      |            (kernel memory pool)           | /
+ * KERNEL_STACK_START   +-------------------------------------------+ 0xF1000000
+ *                      |              (kernel stack)               | \
+ *                      |              V grows down V               |  |
+ *                      |  +---------------+                        |  |
+ *                      |  | iregs.ss3 = . |                        |  |
+ *                      |  | iregs.esp3 = .|                        |  |
+ *                      |  |               |                        |  | 4092 KB
+ *                      |  |     ...       |                        |  |
+ *                      |  +---------------+                        |  |
+ *                      |                                           |  |
+ *                      |                                           |  |
+ *                      |                                           | /
+ *                      +-------------------------------------------+ 0xF0801000
+ *                      |                                           | \
+ *                      |       (unallocated protection page)       |  | 4 KB
+ *                      |                                           | /
+ * KERNEL_STACK_END     +-------------------------------------------+ 0xF0800000
  *                      |                                           |
  *                      |                                           |
  *                      |               ^ grows up ^                |
- *                      |            (kernel memory pool)           |
- * KERNEL_STACK_START   +-------------------------------------------+ v + 4 MB
- *                      |              (kernel stack)               |
- *                      |              V grows down V               |
- *                      |  +---------------+                        |
- *                      |  | iregs.ss3 = . |                        |
- *                      |  | iregs.esp3 = .|                        |
- *                      |  |               |                        |
- *                      |  |     ...       |                        |
- *                      |  +---------------+                        |
- *                      |                                           |
- *                      |                                           |
- *                      |                                           |
+ *                      |             static kernel data            |
+ *                      +-------------------------------------------+ V + x
  *                      |  __kernel_virt_end__ = .                  |
  *                      |                                           |
  *                      | __kernel_bss_end = .                      |
@@ -63,9 +74,44 @@
  *                      |                                           |
  *            + 1Mbytes +-------------------------------------------+ 0xF0100000
  *                      |                                           |
- *                      |              (reserved)                   |
+ *                      |               (reserved)                  |
  *                      |                                           |
  * KERNEL_VIRTUAL_BASE  +-------------------------------------------+ 0xF0000000
+ *                      |                                           |
+ *                      |                 . . .                     |
+ *                      |                                           |
+ *                      +-------------------------------------------+
+ *                      |              (kernel stack)               | \
+ *                      |              V grows down V               |  |
+ *                      |                                           |  | 4092 KB
+ *                      |                                           |  |
+ *                      |                                           | /
+ *                      +-------------------------------------------+
+ *                      |                                           | \
+ *                      |       (unallocated protection page)       |  | 4 KB
+ *                      |                                           | /
+ *                      +-------------------------------------------+ V + x
+ *                      | __driver_virt_end__ = .                   |
+ *                      |                                           |
+ *                      | __driver_bss_end__ = .                    |
+ *                      | SECTION .bss                              |
+ *                      | __driver_bss_start__ = .                  |
+ *                      |                                           |
+ *                      | __driver_data_end__ = .                   |
+ *                      | SECTION .data                             |
+ *                      | __driver_data_start__ = .                 |
+ *                      |                                           |
+ *                      | __driver_rodata_end__ = .                 |
+ *                      | SECTION .ksym - driver symbol list        |
+ *                      | SECTION .rodata                           |
+ *                      | __driver_rodata_start__ = .               |
+ *                      |                                           |
+ *                      | __driver_text_end__ = .                   |
+ *                      | SECTION .text                             |
+ *                      | __driver_text_start__ = .                 |
+ *                      |                                           |
+ *                      | __driver_virt_start__ = .                 |
+ * DRIVER_VIRTUAL_BASE  +-------------------------------------------+ 0xD0000000
  *                      |                                           |
  *                      |                 . . .                     |
  *                      |                                           |
@@ -86,7 +132,7 @@
  *                      |                                           |
  *                      | SECTION .text                             |
  * USER_VIRTUAL_START   +-------------------------------------------+ 0x00800000
- *                      |                 (reserved)                |
+ *                      |               (reserved)                  |
  *                      +-------------------------------------------+
  *
  */
@@ -99,13 +145,16 @@
 
 #    define KERNEL_CODE_START       (KERNEL_VIRTUAL_BASE + KERNEL_PHYSICAL_BASE)
 
-/* TODO: if kernel grows in size this must be changed */
-#    define KERNEL_STACK_START      (KERNEL_CODE_START + 0x00400000)
+#    define KERNEL_STACK_START      0xF1000000
+#    define KERNEL_STACK_END        0xF0800000
+
+#    define KERNEL_POOL_START       0xF1000000
+#    define KERNEL_INITIAL_POOL_SZ  0x00400000
+
+#    define KERNEL_PROTECTION_PAGE1 0xFFFFE000
+#    define KERNEL_PROTECTION_PAGE2 KERNEL_STACK_END
 
 #    define USER_VIRTUAL_START      0x00800000
-
-#    define KERNEL_POOL_START           (KERNEL_CODE_START + 0x00400000)
-#    define KERNEL_INITIAL_POOL_SIZE    0x00100000
 
 /*
  * Global Descriptor Table:
@@ -132,13 +181,13 @@
  */
 
 /** Size of segmentation structure entry in bytes */
-#    define SEGMENT_ENTRY_SIZE      8
+#    define SEGMENT_ENTRY_SIZE          8
 
 /** Count of used segments */
-#    define SEGMENT_COUNT           8
+#    define SEGMENT_COUNT               8
 
 /** Size of segmentation structure */
-#    define SEGMENT_SIZE            (SEGMENT_ENTRY_SIZE * SEGMENT_COUNT)
+#    define SEGMENT_SIZE                (SEGMENT_ENTRY_SIZE * SEGMENT_COUNT)
 
 /** Global Descriptor Table's kernel code segment number */
 #    define GDT_KERNEL_CS               1
@@ -156,13 +205,13 @@
 #    define GDT_TSS_DF                  7
 
 /** Segmentation structure's offsets @{ */
-#    define KERNEL_CS                   (GDT_KERNEL_CS * SEGMENT_ENTRY_SIZE)
-#    define KERNEL_DS                   (GDT_KERNEL_DS * SEGMENT_ENTRY_SIZE)
-#    define USER_CS                     (GDT_CS * SEGMENT_ENTRY_SIZE)
-#    define USER_DS                     (GDT_DS * SEGMENT_ENTRY_SIZE)
-#    define TSS_3                       (GDT_TSS_3 * SEGMENT_ENTRY_SIZE)
+#    define KERNEL_CS                   (GDT_KERNEL_CS  * SEGMENT_ENTRY_SIZE)
+#    define KERNEL_DS                   (GDT_KERNEL_DS  * SEGMENT_ENTRY_SIZE)
+#    define USER_CS                     (GDT_CS         * SEGMENT_ENTRY_SIZE)
+#    define USER_DS                     (GDT_DS         * SEGMENT_ENTRY_SIZE)
+#    define TSS_3                       (GDT_TSS_3      * SEGMENT_ENTRY_SIZE)
 #    define SEGSYSCALL                  (GDT_SEGSYSCALL * SEGMENT_ENTRY_SIZE)
-#    define TSS_DF                      (GDT_TSS_DF * SEGMENT_ENTRY_SIZE)
+#    define TSS_DF                      (GDT_TSS_DF     * SEGMENT_ENTRY_SIZE)
 /** @} */
 
 /** Interrupt count */

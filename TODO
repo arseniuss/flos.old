@@ -1,0 +1,4 @@
+28.05.2015: Load two 4 MByte pages from 0xF0400000 to 0xF080000
+            Init paging before initing kernel memory pool
+            Init virtual memory manager before initing kernel memory pool
+            Set memory pool as growing up and dynamicly allocate

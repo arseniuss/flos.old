@@ -14,20 +14,14 @@
 #include <flos/mem/tlsf.h>
 #include <flos/types.h>
 
-extern char *__kernel_virt_start__;
-extern char *__kernel_virt_end__;
-
-void *kernel_virt_start = &__kernel_virt_start__;
-void *kernel_virt_end = &__kernel_virt_end__;
-
 tlsf_t kernel_pool = NULL;
 
 void init_pool() {
     kprintf("Initing memory pool ... ");
 
     //TODO: change this to KERNEL_POOL_START
-    kernel_pool = tlsf_create_in_pool(kernel_virt_end,
-                                      KERNEL_INITIAL_POOL_SIZE);
+    kernel_pool = tlsf_create_in_pool((void *)KERNEL_POOL_START,
+                                      KERNEL_INITIAL_POOL_SZ);
 
     kprintf("OK\n");
 }

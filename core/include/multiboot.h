@@ -1,5 +1,5 @@
 /**
- * @file    include/multiboot.h      
+ * @file    include/multiboot.h
  * @brief   Multiboot definitions
  * @version 1.0
  * @date    24.04.2014.
@@ -89,22 +89,22 @@ typedef u64 multiboot_uint64_t;
 
 struct multiboot_header {
     /*
-     * Must be MULTIBOOT_MAGIC - see above. 
+     * Must be MULTIBOOT_MAGIC - see above.
      */
     multiboot_uint32_t magic;
 
     /*
-     * Feature flags. 
+     * Feature flags.
      */
     multiboot_uint32_t flags;
 
     /*
-     * The above fields plus this one must equal 0 mod 2^32. 
+     * The above fields plus this one must equal 0 mod 2^32.
      */
     multiboot_uint32_t checksum;
 
     /*
-     * These are only valid if MULTIBOOT_AOUT_KLUDGE is set. 
+     * These are only valid if MULTIBOOT_AOUT_KLUDGE is set.
      */
     multiboot_uint32_t header_addr;
     multiboot_uint32_t load_addr;
@@ -113,7 +113,7 @@ struct multiboot_header {
     multiboot_uint32_t entry_addr;
 
     /*
-     * These are only valid if MULTIBOOT_VIDEO_MODE is set. 
+     * These are only valid if MULTIBOOT_VIDEO_MODE is set.
      */
     multiboot_uint32_t mode_type;
     multiboot_uint32_t width;
@@ -142,28 +142,28 @@ typedef struct multiboot_elf_section_header_table
 
 struct multiboot_info {
     /*
-     * Multiboot info version number 
+     * Multiboot info version number
      */
     multiboot_uint32_t flags;
 
     /*
-     * Available memory from BIOS 
+     * Available memory from BIOS
      */
     multiboot_uint32_t mem_lower;
     multiboot_uint32_t mem_upper;
 
     /*
-     * "root" partition 
+     * "root" partition
      */
     multiboot_uint32_t boot_device;
 
     /*
-     * Kernel command line 
+     * Kernel command line
      */
     multiboot_uint32_t cmdline;
 
     /*
-     * Boot-Module list 
+     * Boot-Module list
      */
     multiboot_uint32_t mods_count;
     multiboot_uint32_t mods_addr;
@@ -174,34 +174,34 @@ struct multiboot_info {
     } u;
 
     /*
-     * Memory Mapping buffer 
+     * Memory Mapping buffer
      */
     multiboot_uint32_t mmap_length;
     multiboot_uint32_t mmap_addr;
 
     /*
-     * Drive Info buffer 
+     * Drive Info buffer
      */
     multiboot_uint32_t drives_length;
     multiboot_uint32_t drives_addr;
 
     /*
-     * ROM configuration table 
+     * ROM configuration table
      */
     multiboot_uint32_t config_table;
 
     /*
-     * Boot Loader Name 
+     * Boot Loader Name
      */
     multiboot_uint32_t boot_loader_name;
 
     /*
-     * APM table 
+     * APM table
      */
     multiboot_uint32_t apm_table;
 
     /*
-     * Video 
+     * Video
      */
     multiboot_uint32_t vbe_control_info;
     multiboot_uint32_t vbe_mode_info;
@@ -240,18 +240,18 @@ typedef struct multiboot_mmap_entry multiboot_memory_map_t;
 
 struct multiboot_mod_list {
     /*
-     * the memory used goes from bytes 'mod_start' to 'mod_end-1' inclusive 
+     * the memory used goes from bytes 'mod_start' to 'mod_end-1' inclusive
      */
     multiboot_uint32_t mod_start;
     multiboot_uint32_t mod_end;
 
     /*
-     * Module command line 
+     * Module command line
      */
     multiboot_uint32_t cmdline;
 
     /*
-     * padding to take it to 16 bytes (must be zero) 
+     * padding to take it to 16 bytes (must be zero)
      */
     multiboot_uint32_t pad;
 };
