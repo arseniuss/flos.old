@@ -15,7 +15,9 @@
 
 #    define assert(x, ...)                                                     \
         do { if(!(x)) {                                                        \
-            kcritf("!"#x" in %s @ %s:%d ", __func__, __FILE__, __LINE__);      \
+            kcritf("\nAssertation error:");                                    \
+            kcritf("\n\t!("#x") in %s @ %s:%d \n\t",                           \
+                __func__, __FILE__, __LINE__);                                 \
             kcritf(__VA_ARGS__);                                               \
             while(1);                                                          \
         } } while(0)

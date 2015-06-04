@@ -42,5 +42,21 @@ extern struct frame *root;
  */
 addr_t phys(void *addr);
 
+/**
+ * Allocate free physical memory frame
+ * @param  size_no size type number
+ * @return         address of physical frame
+ */
+__linkage addr_t frame_alloc(int size_no);
+
+/**
+ * Set frames from physical address as used
+ * @param start  physical address start
+ * @param length block length
+ */
+__linkage void frame_set(addr_t start, size_t length);
+
+__linkage void frame_sz_set(addr_t start, int size_no);
+
 
 #endif /* __flos__MEM_PHYS_H__ */

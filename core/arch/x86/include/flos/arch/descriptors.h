@@ -1,5 +1,5 @@
 /**
- * @file    arch/x86/include/flos/arch/descriptors.h  
+ * @file    arch/x86/include/flos/arch/descriptors.h
  * @brief   Descriptos
  * @version 1.0
  * @date    14.12.2014.

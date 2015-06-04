@@ -21,15 +21,26 @@ ENTRY(start)
 OUTPUT_FORMAT("elf32-i386")
 
 SECTIONS {
-    . = KERNEL_CODE_START;
+    . = KERNEL_VIRTUAL_BASE + 0x00100000;
 
-    __kernel_start__ = . - KERNEL_VIRTUAL_BASE ;
-    __kernel_virt_start__ = .;
+    .start : AT(ADDR(.start) - KERNEL_VIRTUAL_BASE){
+        *(.start*)
+    }
 
-    __kernel_text_start__ = .;
+    .paging ALIGN(0x1000) : AT(ADDR(.paging) - KERNEL_VIRTUAL_BASE)
+    {
+        __kernel_paging_start__ = .;
+        *(.paging*)
+        __kernel_paging_end__ = .;
+    }
 
     /* code section */
-    .text ALIGN(0x1000) : AT(ADDR(.text) - KERNEL_VIRTUAL_BASE) {
+    .text ALIGN(0x00400000) : AT(ADDR(.text) - KERNEL_VIRTUAL_BASE) {
+
+        __kernel_start__ = . - KERNEL_VIRTUAL_BASE ;
+        __kernel_virt_start__ = .;
+        __kernel_text_start__ = .;
+
         /* entry point first! */
     	*.entry.S.o(.text)
         *(.text)

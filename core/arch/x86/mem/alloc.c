@@ -16,9 +16,10 @@
 #include <flos/mem/phys.h>
 #include <flos/assert.h>
 #include <flos/mem/pool.h>
+#include <flos/arch/mem.h>
 
-extern char *__kernel_virt_end__;
-addr_t early_pool_bottom = 0;
+addr_t early_pool_start = NULL;
+addr_t early_pool_end = NULL;
 
 void *early_kmalloc(size_t sz, int flags, ...) {
     va_list args;
@@ -37,11 +38,12 @@ void *early_kmalloc(size_t sz, int flags, ...) {
         p = va_arg(args, addr_t *);
     }
 
-    if(early_pool_bottom == 0) {
-        early_pool_bottom = (addr_t) & __kernel_virt_end__;
+    if(early_pool_end == NULL) {
+        early_pool_start = kernel_virt_end;
+        early_pool_end = kernel_virt_end;
     }
 
-    ret = early_pool_bottom;
+    ret = early_pool_end;
 
     if(flags & KMALLOC_ALIGNED) {
         if(ret % align != 0)
@@ -55,7 +57,7 @@ void *early_kmalloc(size_t sz, int flags, ...) {
         memset((void *)ret, 0, sz);
     }
 
-    early_pool_bottom = ret + sz;
+    early_pool_end = ret + sz;
 
     return (void *)ret;
 }

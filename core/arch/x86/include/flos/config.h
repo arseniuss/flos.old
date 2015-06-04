@@ -24,7 +24,7 @@
  *                      |                                           |  | ~240 MB
  *                      |               ^ grows up ^                |  |
  *                      |            (kernel memory pool)           | /
- * KERNEL_STACK_START   +-------------------------------------------+ 0xF1000000
+ * KERNEL_STACK_START   +-------------------------------------------+ 0xF0800000
  *                      |              (kernel stack)               | \
  *                      |              V grows down V               |  |
  *                      |  +---------------+                        |  |
@@ -36,11 +36,11 @@
  *                      |                                           |  |
  *                      |                                           |  |
  *                      |                                           | /
- *                      +-------------------------------------------+ 0xF0801000
+ *                      +-------------------------------------------+
  *                      |                                           | \
  *                      |       (unallocated protection page)       |  | 4 KB
  *                      |                                           | /
- * KERNEL_STACK_END     +-------------------------------------------+ 0xF0800000
+ * KERNEL_STACK_END     +-------------------------------------------+
  *                      |                                           |
  *                      |                                           |
  *                      |               ^ grows up ^                |
@@ -145,10 +145,9 @@
 
 #    define KERNEL_CODE_START       (KERNEL_VIRTUAL_BASE + KERNEL_PHYSICAL_BASE)
 
-#    define KERNEL_STACK_START      0xF1000000
-#    define KERNEL_STACK_END        0xF0800000
+#    define KERNEL_STACK_START      0xF0800000
 
-#    define KERNEL_POOL_START       0xF1000000
+#    define KERNEL_POOL_START       0xF0800000
 #    define KERNEL_INITIAL_POOL_SZ  0x00400000
 
 #    define KERNEL_PROTECTION_PAGE1 0xFFFFE000
@@ -227,6 +226,8 @@
 #    define KERNEL_FREQ                 100
 
 /** Frame types: 4 MB, 4 KB */
+#    define FRAME_SIZE1                 (4 * 1024)
+#    define FRAME_SIZE2                 (4 * 1024 * 1024)
 #    define FRAME_TYPE_COUNT            2
 #    define SUPPORTED_MEMORY_AMOUNT     (4 * 1024 * 1024 * 1024)
 

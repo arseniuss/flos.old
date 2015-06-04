@@ -64,4 +64,32 @@ __linkage int kprintf(const char *fmt, ...);
 #    define kdebugf(fmt, ...) \
                 kprintf(KERN_DEBUG fmt, ##__VA_ARGS__)
 
+#    define kprintf_once(fmt, ...)                                             \
+    do {                                                                       \
+        static bool __kprintf_once;                                            \
+                                                                               \
+        if(!__kprintf_once)                                                    \
+        {                                                                      \
+            __kprintf_once = TRUE;                                             \
+            kprintf(fmt, ##__VA_ARGS__);                                       \
+        }                                                                      \
+    } while(0)
+
+#    define kemergf_once(fmt, ...) \
+                kprintf_once(KERN_EMERG fmt, ##__VA_ARGS__)
+#    define kalertf_once(fmt, ...) \
+                kprintf_once(KERN_ALERT fmt, ##__VA_ARGS__)
+#    define kcritf_once(fmt, ...) \
+                kprintf_once(KERN_CRIT fmt, ##__VA_ARGS__)
+#    define kerrorf_once(fmt, ...) \
+                kprintf_once(KERN_ERR fmt, ##__VA_ARGS__)
+#    define kwarningf_once(fmt, ...) \
+                kprintf_once(KERN_WARN fmt, ##__VA_ARGS__)
+#    define knoticef_once(fmt, ...) \
+                kprintf_once(KERN_NOTICE fmt, ##__VA_ARGS__)
+#    define kinfof_once(fmt, ...) \
+                kprintf_once(KERN_INFO fmt, ##__VA_ARGS__)
+#    define kdebugf_once(fmt, ...) \
+                kprintf_once(KERN_DEBUG fmt, ##__VA_ARGS__)
+
 #endif /* __flos__KPRINTF_H__ */

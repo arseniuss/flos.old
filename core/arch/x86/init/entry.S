@@ -25,7 +25,7 @@
 
 [BITS 32]
 
-section .text
+section .start
 global start
 
 start:
@@ -47,6 +47,8 @@ multiboot_header:
     dd entry
 #   endif /* __ELF__ */
 #endif /* __MULTIBOOT__ */
+
+section .text
 
 _start:
     /* load gdt table */
@@ -180,9 +182,11 @@ extern kmain
 loop:
     jmp loop
 
-section .data
+section .paging
 
 global kernel_page_directory
+global kernel_page_directory.table1
+global kernel_page_directory.table2
 
 kernel_page_directory:
     times 1024 dd 0

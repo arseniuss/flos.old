@@ -22,6 +22,7 @@ struct process {
     u8 priority;
 
     struct list_head sched_list;
+    struct list_head mmap_list; // list of struct memarea_list
 
     struct process_arch *arch;
 };

@@ -97,7 +97,7 @@ struct iregs *irq_handler(struct iregs *regs) {
     }
 
     if(handled <= INTERRUPT_NOT_HANDLED)
-        kdebugf("IRQ%d is not handled\n", irq);
+        kdebugf_once("IRQ%d is not handled\n", irq);
 
     pic_eoi(irq);
 
@@ -106,17 +106,24 @@ struct iregs *irq_handler(struct iregs *regs) {
 
 struct iregs *isr_handler(struct iregs *regs) {
     struct interrupt_handle *pos;
+    int handled = INTERRUPT_NOT_HANDLED;
 
     list_for_each_entry(pos, &interrupt_handler[regs->int_no], ihandle_list) {
-        if(pos->ihandle_func(regs) > 0)
-            return regs;
+        handled = pos->ihandle_func(regs);
+
+        if(handled <= INTERRUPT_HANDLE_ERROR)
+            kerrorf("Error while handing interrupt %d\n", regs->int_no);
+        if(handled >= INTERRUPT_HANDLED)
+            break;
     }
 
-    kcritf("Unresolved exception no. %d: %s\n", regs->int_no,
-           exception_messages[regs->int_no]);
-    dump_regs(regs);
+    if(handled <= INTERRUPT_NOT_HANDLED) {
+        kcritf("Unresolved exception no. %d: %s\n", regs->int_no,
+               exception_messages[regs->int_no]);
+        dump_regs(regs);
 
-    while(1);
+        while(1);
+    }
 
     return regs;
 }

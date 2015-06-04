@@ -76,6 +76,6 @@ struct page_directory {
     struct page_table *table[1024];
 } __packed;
 
-void init_memory();
+__linkage void init_paging();
 
 #endif /* __flos_x86__PAGING_H__ */

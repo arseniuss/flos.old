@@ -23,28 +23,24 @@ size_t frame_sizes[FRAME_TYPE_COUNT] = {
 };
 
 void init_frames() {
-    addr_t phys_addr;
+    //addr_t phys_addr;
     void *bitmap_memory;
 
     kprintf("Initing physical page frames ... ");
 
     assert(root == NULL, "Physical page frames are already inited!");
 
-    root =
-        early_kmalloc(sizeof(struct frame), KMALLOC_ZERO | KMALLOC_PHYS,
-                      &phys_addr);
-    root->phys_addr = phys_addr;
+    root = early_kmalloc(sizeof(struct frame), KMALLOC_ZERO);
+    //root->phys_addr = phys_addr;
     bitmap_memory = early_kmalloc(BITMAP_BIT_COUNT / 8, 0);
     bitmap_occupy(&root->bitmap, bitmap_memory, BITMAP_BIT_COUNT / 8);
     root->frames =
         early_kmalloc(BITMAP_BIT_COUNT * sizeof(struct frame *), KMALLOC_ZERO);
 
     for(int i = 0; i < BITMAP_BIT_COUNT; ++i) {
-        struct frame *frame = early_kmalloc(sizeof(struct frame),
-                                            KMALLOC_ZERO | KMALLOC_PHYS,
-                                            &phys_addr);
+        struct frame *frame = early_kmalloc(sizeof(struct frame), KMALLOC_ZERO);
 
-        frame->phys_addr = phys_addr;
+        //frame->phys_addr = phys_addr;
         bitmap_memory = early_kmalloc(BITMAP_BIT_COUNT / 8, 0);
         bitmap_occupy(&frame->bitmap, bitmap_memory, BITMAP_BIT_COUNT / 8);
         frame->up = root;

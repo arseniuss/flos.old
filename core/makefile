@@ -123,10 +123,10 @@ sources := $(addprefix $(CURDIR)/,$(sources))
 
 all: $(TARGET)
 
-$(TARGET): $(objects)
+$(TARGET): $(objects) $(CURDIR)/arch/$(arch)/linker.ld
 	@ /bin/echo -e "\t LD $(TARGET)  $(RED)"
 	@ mkdir -p $(TMP)/arch/$(arch)
-	@ $(PP) $(PPFLAGS) -P arch/$(arch)/linker.ld > $(TMP)/arch/$(arch)/linker.ld
+	@ $(PP) $(PPFLAGS) -P $(CURDIR)/arch/$(arch)/linker.ld > $(TMP)/arch/$(arch)/linker.ld
 	@ $(LD) $(LDFLAGS) -T $(TMP)/arch/$(arch)/linker.ld -o $@ $(objects) \
 	$(shell $(CC) -print-libgcc-file-name)
 	@ $(DUMP) $(DUMPFLAGS) $@ > $(TMP)/$(notdir $@.dump)
