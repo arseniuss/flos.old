@@ -8,5 +8,5 @@
 #* @copyright see file LICENSE
 #*
 
-STATIC_DRIVERS = kbd
-DYNAMIC_DRIVERS = 
+STATIC_DRIVERS = kbd bga
+DYNAMIC_DRIVERS =

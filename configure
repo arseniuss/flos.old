@@ -13,7 +13,7 @@
 # Exit if error
 set -e
 
-PROGNAME=${0##*/} 
+PROGNAME=${0##*/}
 
 VERSION='1.0'
 force=0
@@ -65,7 +65,7 @@ Options:
 EOF
 }
 
-for i in "$@"; do 
+for i in "$@"; do
     case $i in
     --force)
     	echo "Warning: forcing configuration creation!"
@@ -163,7 +163,7 @@ case "$host" in
 			esac
 		# Check if architecture is supported
 		else
-			if [ "$supported_arch" = "$(echo $supported_arch | sed s/$arch//)" ]; then 
+			if [ "$supported_arch" = "$(echo $supported_arch | sed s/$arch//)" ]; then
 				echo "Error: architecture '$arch' is not supported"
 				exit 1
 			fi
@@ -176,12 +176,12 @@ if [ ! -d "$core_dir" ] && [ "$core" -eq 1 ]; then
 	echo "Directory $core_dir do not exist"
 	exit 1
 fi
-		
+
 # Setting feature list
 case "$arch" in
 	"x86")
 		supported_features='DEBUG TEST MULTIBOOT SERIALLOG'
-		
+
 		if [ $feature_debug -eq 1 ]; then features="$features DEBUG"; fi
 		if [ $feature_multiboot -eq 1 ] && [ $core -eq 1 ]; then features="$features MULTIBOOT"; fi
 		if [ $feature_tests -eq 1 ] && [ $core -eq 1 ]; then features="$features TEST"; fi
@@ -194,7 +194,7 @@ if [ "$cc_dir" ]; then
 		echo "Error: cross compiler directory '$cc_dir' do not exist"
 		exit 1
 	fi
-	
+
 	# Checking if all tools are available
 	for i in $cc_tools; do
 		tool="$cc_dir/bin/${cc_prefix}${i}"
@@ -257,7 +257,7 @@ if [ "$as_dir" ]; then
 	cat <<EOF >>config.mk
 #
 # Assembler
-#	
+#
 ASM = $(readlink -f $as_dir)/nasm
 EOF
 fi
@@ -266,4 +266,3 @@ fi
 if [ $core -eq 1 ]; then
 	ln -sfv `pwd`/config.mk "$core_dir/config.mk"
 fi
-
