@@ -62,11 +62,11 @@ SECTIONS {
 
         __kernel_ksymtbl_start__ = .;
 
-        *(SORT(.ksymtab*))
+        *(SORT(.ksymtbl*))
 
         __kernel_ksymtbl_end__ = .;
 
-        *(SORT(.kstrtab*))
+        *(SORT(.kstrtbl*))
     }
 
     __kernel_rodata_end__ = .;

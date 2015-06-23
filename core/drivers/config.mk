@@ -9,4 +9,4 @@
 #*
 
 STATIC_DRIVERS = kbd bga pci
-DYNAMIC_DRIVERS =
+DYNAMIC_DRIVERS = dummy

@@ -12,6 +12,7 @@
 #include <flos/kernel.h>
 #include <flos/string.h>
 #include <flos/vaargs.h>
+#include <flos/fs/bin/sym.h>
 
 #ifndef KLOG
 #    error "Kernel logging function is not defined!"
@@ -54,3 +55,5 @@ __linkage int kprintf(const char *fmt, ...) {
 
     return len;
 }
+
+EXPORT_SYMBOL(kprintf);

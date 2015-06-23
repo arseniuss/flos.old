@@ -7,3 +7,4 @@ tmp-*
 nbproject/private
 *.elf
 *~
+*.ko

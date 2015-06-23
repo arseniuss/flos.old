@@ -14,11 +14,6 @@
 #* TODO: Target depends on makefiles and source lists -- find new make program
 #*
 
-KERNEL_MAJOR = 0
-KERNEL_MINOR = 1
-KERNEL_PATCH = 0
-KERNEL_NAME = "Cetraria Islandica"
-
 includes = include
 sources =
 defines = KERNEL
@@ -27,23 +22,18 @@ ifeq ("$(wildcard ./config.mk)","")
     $(error Configuration file config.mk do not exist)
 endif
 
+include common.mk
 include config.mk
 
 ifeq ($(arch),)
     $(error Architecture is not specified)
 endif
 
+include arch/$(arch)/config.mk
+
 CONFIG = $(addprefix CONFIG_,$(config))
 
 include sources.mk
-
-AR ?= ar
-ASM ?= nasm
-CC ?= gcc
-CPP ?= gcc
-DUMP ?= objdump
-LD ?= ld
-PP ?= cpp
 
 ifneq ($(notdir $(ASM)),nasm)
     $(error $(notdir $(ASM)) assembler is not supported. Use nasm assembler)
@@ -65,53 +55,16 @@ DEFINES	    := $(addprefix -D__,$(addsuffix __=1,$(defines))) \
     -DKERNEL_MAJOR=$(KERNEL_MAJOR) -DKERNEL_MINOR=$(KERNEL_MINOR) \
     -DKERNEL_PATCH=$(KERNEL_PATCH) -DKERNEL_NAME=\"$(KERNEL_NAME)\"
 
-CFLAGS = $(INCLUDES) $(DEFINES)
-CPPFLAGS = $(INCLUDES) $(DEFINES)
-PPFLAGS = $(INCLUDES) $(DEFINES)
+CFLAGS += $(INCLUDES) $(DEFINES)
+CPPFLAGS += $(INCLUDES) $(DEFINES)
+PPFLAGS += $(INCLUDES) $(DEFINES)
 
-# Source flags
-	# Enables all warnings
-	FLAGS += -Wall
-	# Enable stack protector warnings
-	FLAGS += -Wstack-protector
-	# Ignore unused attributes
-	FLAGS += -Wno-attributes
-	# Assert that compilation targets a freestanding environment
-	FLAGS += -ffreestanding
-	# Do not use the standard system startup files or libraries when linking
-	FLAGS += -nostdlib
-	# Do not use a so-called “red zone” for x86-64 code
-	FLAGS += -mno-red-zone
-	# Do not use exceptions
-	FLAGS += -fno-exceptions -fno-asynchronous-unwind-tables
-	# Do not use run-time type identification features
-	CPPFLAGS += -fno-rtti
-	# Adding debugging symbols
-	FLAGS += -g
-	# Using 2011 C ISO standard
-	CFLAGS += -std=c11
-	CFLAGS += -fplan9-extensions
+LDFLAGS += -Map $(TMP)/kernel.$(arch).elf.map
 
 CFLAGS += $(FLAGS)
 CPPFLAGS += $(FLAGS)
 
-# Assmbler flags
-	# ELF format
-	ASMFLAGS += -f elf
-
-# Linker flags
-	# Add all symbols to dynamic symbol table
-	LDFLAGS += --export-dynamic
-	# Print kernel map
-	LDFLAGS += -Map $(TMP)/kernel.$(arch).elf.map
-
-# Dumper flags
-	# Disassemble all
-	DUMPFLAGS += -D
-	# Display all available header information
-	DUMPFLAGS += -x
-	# Use Intel syntax
-	DUMPFLAGS += -M intel
+drivers = $(addsuffix .ko,$(addprefix drivers/,$(DYNAMIC_DRIVERS)))
 
 objects	= $(addsuffix .o,$(sources))
 objects	:= $(join $(dir $(objects)),$(notdir $(objects)))
@@ -123,11 +76,14 @@ sources := $(addprefix $(CURDIR)/,$(sources))
 
 all: $(TARGET)
 
-$(TARGET): $(objects) $(CURDIR)/arch/$(arch)/linker.ld
+$(drivers):
+	@ make -C drivers
+
+$(TARGET): $(objects) $(CURDIR)/arch/$(arch)/kerne.ld $(drivers)
 	@ /bin/echo -e "\t LD $(TARGET)  $(RED)"
 	@ mkdir -p $(TMP)/arch/$(arch)
-	@ $(PP) $(PPFLAGS) -P $(CURDIR)/arch/$(arch)/linker.ld > $(TMP)/arch/$(arch)/linker.ld
-	@ $(LD) $(LDFLAGS) -T $(TMP)/arch/$(arch)/linker.ld -o $@ $(objects) \
+	@ $(PP) $(PPFLAGS) -P $(CURDIR)/arch/$(arch)/kernel.ld > $(TMP)/arch/$(arch)/kernel.ld
+	@ $(LD) $(LDFLAGS) -T $(TMP)/arch/$(arch)/kernel.ld -o $@ $(objects) \
 	$(shell $(CC) -print-libgcc-file-name)
 	@ $(DUMP) $(DUMPFLAGS) $@ > $(TMP)/$(notdir $@.dump)
 	@ /bin/echo -e -n "$(OK)"

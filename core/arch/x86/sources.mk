@@ -8,10 +8,6 @@
 #* @copyright see file LICENSE
 #*
 
-defines += 32
-
-includes += arch/x86/include
-
 sources += \
 	arch/x86/init/entry.S \
 	arch/x86/init/idt.S \

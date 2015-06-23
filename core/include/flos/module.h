@@ -66,6 +66,9 @@ extern struct list_head modules;
 #    define INTERNAL_MODULE(mod)                                               \
         static struct module *UNIQUE(mod) __section(".kmodules") __used = &mod;
 
+#    define EXTERNAL_MODULE(mod)                                               \
+        static struct module *UNIQUE(mod) __section(".kmodule")__used = &mod;
+
 void init_modules();
 
 #endif /* __flos__MODULE_H__ */
