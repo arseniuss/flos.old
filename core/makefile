@@ -79,7 +79,7 @@ all: $(TARGET)
 $(drivers):
 	@ make -C drivers
 
-$(TARGET): $(objects) $(CURDIR)/arch/$(arch)/kerne.ld $(drivers)
+$(TARGET): $(objects) $(CURDIR)/arch/$(arch)/kernel.ld $(drivers)
 	@ /bin/echo -e "\t LD $(TARGET)  $(RED)"
 	@ mkdir -p $(TMP)/arch/$(arch)
 	@ $(PP) $(PPFLAGS) -P $(CURDIR)/arch/$(arch)/kernel.ld > $(TMP)/arch/$(arch)/kernel.ld
