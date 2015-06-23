@@ -8,5 +8,5 @@
 #* @copyright see file LICENSE
 #*
 
-STATIC_DRIVERS = kbd bga
+STATIC_DRIVERS = kbd bga pci
 DYNAMIC_DRIVERS =

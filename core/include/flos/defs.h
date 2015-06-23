@@ -37,7 +37,7 @@
 #    define unlikely(x)             __builtin_expect(!!(x), 0)
 
 #    ifdef __cplusplus
-#        define __linkage extern "C"
+#        define __linkage           extern "C"
 #    else
 #        define __linkage
 #    endif
