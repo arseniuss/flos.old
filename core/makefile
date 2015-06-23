@@ -124,6 +124,7 @@ $(TMP)/%.S.o: $(CURDIR)/%.S
 	@ /bin/echo -e -n "$(OK)"
 
 clean:
+	@ make -C drivers clean
 	@ rm -rvf $(TMP)
 
 clear: clean
