@@ -7,3 +7,4 @@ configure.*
 /core/serial.log
 tools-*
 tags
+.tags*
