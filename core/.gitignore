@@ -8,3 +8,4 @@ nbproject/private
 *.elf
 *~
 *.ko
+initrd.tar

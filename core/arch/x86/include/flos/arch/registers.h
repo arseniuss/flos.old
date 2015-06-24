@@ -81,10 +81,10 @@ static inline void dump_regs(struct iregs *regs) {
            regs->cs, regs->ds, regs->es, regs->fs, regs->gs, regs->ss);
     kinfof("\tesi:%08x edi:%08x ebp:%08x eip:%08x esp:%08x\n",
            regs->esi, regs->edi, regs->ebp, regs->eip, regs->esp);
-    kinfof("\teflags:%b int:%X ierr:%08X\n",
+    kinfof("\teflags:%b int:%d ierr:%08X\n",
            regs->eflags, regs->int_no, regs->err_code);
     /*
-     * If interrupt comes from user space 
+     * If interrupt comes from user space
      */
     if(regs->eip < KERNEL_VIRTUAL_BASE)
         kinfof("\tesp3:%08x ss3:%08x\n", regs->esp3, regs->ss3);

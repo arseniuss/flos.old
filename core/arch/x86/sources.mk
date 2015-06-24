@@ -13,6 +13,7 @@ sources += \
 	arch/x86/init/idt.S \
 	arch/x86/init/idt.c \
 	arch/x86/init/kmain.c \
+	arch/x86/init/multiboot.c \
 	arch/x86/mem/alloc.c \
 	arch/x86/mem/area.c \
 	arch/x86/mem/frames.c \

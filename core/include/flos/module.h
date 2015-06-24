@@ -17,9 +17,16 @@
 /** Module states */
 enum module_state {
     MODULE_UNINITED,            ///< Uninited module
-    MODULE_PREREQ_SOLVED,       ///< Inited module
+    MODULE_PREREQ_SOLVED,       ///< Prerequisites solved
+    MODULE_RESOLVED,            ///< Module symbols resolved
     MODULE_STARTED,             ///< Module init function run
     MODULE_EXITED               ///< Module exit function run
+};
+
+/** Module types */
+enum module_type {
+    STATIC_MODULE_TYPE = 0,     ///< Module is part of kernel
+    ELF_MODULE_TYPE                    ///< Dynamicly loaded ELF object
 };
 
 /** A prerequisite of a module */
@@ -33,6 +40,7 @@ struct module {
     const char *authors;        ///< module authors
     const char *description;    ///< module description
 
+    enum module_type type;      ///< module type
     enum module_state state;    ///< module state
 
     /**
@@ -52,10 +60,20 @@ struct module {
 
     struct list_head memmap;
     struct list_head __modules; ///< node for list #kmodules
+
+    void *specific;             ///< pointer to module data
 };
 
-/** List of kernel modules */
-extern struct list_head modules;
+struct module_type_handler {
+    const char *name;           ///< module type handler name
+
+    enum module_type type;      ///< module type
+
+    int (*resolve) (struct module *);
+    void (*finish) (struct module *);
+
+    struct list_head __handlers;
+};
 
 #    define MODULE_INIT(fn)                                                    \
         int (*fn##_ctor)() __section(".module.ctor") = fn;
@@ -69,6 +87,11 @@ extern struct list_head modules;
 #    define EXTERNAL_MODULE(mod)                                               \
         static struct module *UNIQUE(mod) __section(".kmodule")__used = &mod;
 
-void init_modules();
+int register_module(struct module *m);
+void unregister_module(struct module *m);
+int register_module_type_handler(struct module_type_handler *h);
+void unregister_module_type_handler(struct module_type_handler *h);
+struct module *module_find(const char *name);
+int module_init(struct module *m);
 
 #endif /* __flos__MODULE_H__ */

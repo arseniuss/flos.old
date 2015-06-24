@@ -54,6 +54,8 @@ _start:
     /* load gdt table */
     lgdt [kernel_gdt_ptr - KERNEL_VIRTUAL_BASE]
 
+    pusha
+
     /* Check if 4 MB pages is supported */
     mov eax, 0
     cpuid
@@ -130,6 +132,21 @@ _start:
 
 _higher_start:
 extern kmain
+
+    popa
+
+#if __MULTIBOOT__
+extern multiboot_info
+extern multiboot_magic
+
+#ifdef __HIGHER_HALF__
+    add ebx, KERNEL_VIRTUAL_BASE
+#endif
+    mov dword [multiboot_info], ebx
+    mov dword [multiboot_magic], eax
+
+#endif
+
     /* Since stack borders memory pool offset is needed to avoid overflow */
     mov esp, (KERNEL_STACK_START - 8)
 

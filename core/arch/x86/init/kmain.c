@@ -18,6 +18,8 @@
 #include <flos/module.h>
 #include <flos/arch/mem.h>
 
+void init_multiboot();
+
 void log_header(const char *fmt, ...) {
     char buf[MAX_CHAR_BUF_LEN];
     int pad;
@@ -49,6 +51,8 @@ int kmain() {
     init_paging();
 
     init_pool();
+
+    init_multiboot();
 
     init_modules();
 

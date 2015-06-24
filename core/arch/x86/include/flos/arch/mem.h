@@ -27,6 +27,9 @@ extern char __kernel_data_end__;
 extern char __kernel_bss_start__;
 extern char __kernel_bss_end__;
 
+extern char __kernel_ksymtbl_start__;
+extern char __kernel_ksymtbl_end__;
+
 extern addr_t kernel_virt_start;
 extern addr_t kernel_virt_end;
 extern addr_t kernel_text_start;
@@ -37,6 +40,9 @@ extern addr_t kernel_data_start;
 extern addr_t kernel_data_end;
 extern addr_t kernel_bss_start;
 extern addr_t kernel_bss_end;
+
+extern addr_t kernel_symtbl_start;
+extern addr_t kernel_symtbl_end;
 
 __linkage void init_memory_areas();
 

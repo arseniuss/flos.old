@@ -9,133 +9,144 @@
  */
 
 #include <flos/module.h>
-#include <flos/string.h>
-#include <flos/types.h>
-#include <flos/kprintf.h>
-#include <flos/assert.h>
 #include <flos/list.h>
+#include <flos/string.h>
+#include <flos/kprintf.h>
 
-extern struct module **kernel_modules_start;
-extern struct module **kernel_modules_end;
+#include "module.h"
 
-LIST_HEAD(modules);
-
+/**
+ * Finds module by its name
+ */
 struct module *module_find(const char *name) {
-    for(struct module ** m = kernel_modules_start; m < kernel_modules_end; ++m) {
-        if(!strcmp(name, (*m)->name))
-            return *m;
+    struct module *m;
+
+    list_for_each_entry(m, &modules, __modules) {
+        if(!strcmp(name, m->name))
+            return m;
     }
 
     return NULL;
 }
 
-void module_resolve(struct module *m) {
+/**
+ * Resolve prerequisites
+ */
+int module_resolve_prereq(struct module *m) {
     if(m->state >= MODULE_PREREQ_SOLVED)
-        return;
+        return 0;
 
-    for(struct module_prereq * p = m->required; p != NULL && p->name != NULL;
-        ++p) {
+    for(struct module_prereq * p = m->parents; p != NULL && p->name != NULL;
+        p++) {
         p->module = module_find(p->name);
     }
 
-    for(struct module_prereq * p = m->parents; p != NULL && p->name != NULL;
-        ++p) {
-        p->module = module_find(p->name);
+    for(struct module_prereq * p = m->required; p != NULL && p->name != NULL;
+        p++) {
+        if(!(p->module = module_find(p->name))) {
+            kdebugf("Could not find required module '%s' by '%s'!\n", p->name,
+                    m->name);
+            return -1;
+        }
     }
 
     m->state = MODULE_PREREQ_SOLVED;
+
+    return 0;
 }
 
-int module_init(struct module *m) {
-    if(m->state == MODULE_STARTED)
-        return 0;
-    if(m->state > MODULE_STARTED)
+/**
+ * 	Resolves needed symbols
+ */
+int module_resolve_sym(struct module *m) {
+    struct module_type_handler *h;
+
+    if(m->type > STATIC_MODULE_TYPE) {
+        list_for_each_entry(h, &handlers, __handlers) {
+            if(h->type == m->type) {
+                if(!h->resolve(m)) {
+                    kdebugf("Could not resolve module '%s' symbols!", m->name);
+                } else
+                    m->state = MODULE_RESOLVED;
+
+                break;
+            }
+        }
+    } else
+        m->state = MODULE_RESOLVED;
+
+    if(m->state != MODULE_RESOLVED) {
+        kdebugf("Unknown module '%s' type!\n", m->name);
         return -1;
-
-    m->state = MODULE_STARTED;
-
-    if(m->required) {
-        for(struct module_prereq * p = m->required;
-            p != NULL && p->name != NULL; ++p) {
-            if(!p->module) {
-                kdebugf("Module '%s' required by '%s' not found!\n", p->name,
-                        m->name);
-                return -1;
-            } else
-                module_init(p->module);
-        }
-    }
-
-    if(m->parents) {
-        for(struct module_prereq * p = m->parents; p != NULL && p->name != NULL;
-            ++p) {
-            module_init(p->module);
-        }
-    }
-
-    if(m->init) {
-        kdebugf("Initing module %s\n", m->name);
-
-        int ret = m->init();
-
-        return ret;
     }
 
     return 0;
 }
 
-void module_fini(struct module *m) {
+int module_init(struct module *m) {
+    int err = 0;
+
+    if(m->state == MODULE_STARTED)
+        return 0;
+    if(m->state > MODULE_STARTED)
+        return -1;
+
+    if(module_resolve_prereq(m)) {
+        kdebugf("Could not resolve module '%s' prerequisites!\n", m->name);
+        return -2;
+    }
+
+    if(m->required) {
+        for(struct module_prereq * p = m->required;
+            p != NULL && p->name != NULL; p++) {
+            if(!p->module) {
+                kdebugf("Module '%s' required by '%s' not found\n", p->name,
+                        m->name);
+                return -3;
+            } else if(!module_init(p->module)) {
+                kdebugf("Cannot init module '%s' required by '%s'\n", p->name,
+                        m->name);
+                return -4;
+            }
+        }
+    }
+
+    if(m->parents) {
+        for(struct module_prereq * p = m->parents;
+            p != NULL && p->name != NULL; p++) {
+            if(p->module)
+                module_init(p->module);
+        }
+    }
+
+    if(module_resolve_sym(m)) {
+        kdebugf("Could not resolve module '%s' symbols!\n", m->name);
+        return -5;
+    }
+
+    if(m->init) {
+        err = m->init();
+    }
+
+    if(!err)
+        m->state = MODULE_STARTED;
+    else
+        kdebugf("Module '%s' returned error %d\n", err);
+
+    return err;
+}
+
+int module_fini(struct module *m) {
     if(m->state != MODULE_STARTED)
-        return;
+        return -1;
 
-    m->state = MODULE_EXITED;
-
-    //TODO: notify that module exited
+    //TODO: notify others that module will finish
 
     if(m->exit) {
         m->exit();
     }
-}
 
-void init_modules() {
-    int module_count = 0;
-    int modules_failed = 0;
-    int modules_inited = 0;
+    m->state = MODULE_EXITED;
 
-    kinfof("Initing kernel static modules ... ");
-    kdebugf("\n");
-
-    assert(kernel_modules_start != NULL,
-           "Error: kernel module start position not found!");
-
-    kdebugf("Kernel modules = {[%p .. %p]}\n",
-            kernel_modules_start, kernel_modules_end);
-
-    for(struct module ** m = kernel_modules_start; m < kernel_modules_end; ++m) {
-        module_count++;
-        list_add_tail(&(*m)->__modules, &modules);
-        (*m)->state = MODULE_UNINITED;
-    }
-
-    kdebugf("Found %d modules\n", module_count);
-
-    for(struct module ** m = kernel_modules_start; m < kernel_modules_end; ++m)
-        module_resolve(*m);
-
-    for(struct module ** m = kernel_modules_start; m < kernel_modules_end; ++m) {
-        kdebugf("Module @ %p [name '%s', init @ %p, exit @ %p]\n",
-                *m, (*m)->name, (*m)->init, (*m)->exit);
-
-        if(module_init(*m)) {
-            kerrorf("Can't init module %s!\n", (*m)->name);
-            modules_failed++;
-        } else
-            modules_inited++;
-    }
-
-    kdebugf("Inited %d modules\n", modules_inited);
-    kdebugf("Failed %d modules\n", modules_failed);
-
-
-    kinfof("OK\n");
+    return 0;
 }

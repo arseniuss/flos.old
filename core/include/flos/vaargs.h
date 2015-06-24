@@ -1,5 +1,5 @@
 /**
- * @file    include/flos/vaargs.h    
+ * @file    include/flos/vaargs.h
  * @brief   Variadical arguments
  * @version 1.0
  * @date    13.12.2014.

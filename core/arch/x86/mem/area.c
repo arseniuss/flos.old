@@ -27,6 +27,8 @@ addr_t kernel_data_end = (addr_t) & __kernel_data_end__;
 addr_t kernel_bss_start = (addr_t) & __kernel_bss_start__;
 addr_t kernel_bss_end = (addr_t) & __kernel_bss_end__;
 
+addr_t kernel_symtbl_start = (addr_t) & __kernel_ksymtbl_start__;
+addr_t kernel_symtbl_end = (addr_t) & __kernel_ksymtbl_end__;
 
 struct memarea kernel_paging = {
     .start = (addr_t) & __kernel_paging_start__,

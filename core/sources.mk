@@ -13,6 +13,8 @@ include debug/sources.mk
 include drivers/sources.mk
 
 sources +=  \
+	fs/bin/elf.c \
+	fs/bin/sym.c \
     lib/bits.c \
     lib/ctype.c \
     lib/string.c \
@@ -20,6 +22,7 @@ sources +=  \
     mem/alloc.c \
     mem/frames.c \
     mem/tlsf.c \
+	module/if.c \
 	module/init.c \
     proc/interrupts.c \
     proc/sched.c
