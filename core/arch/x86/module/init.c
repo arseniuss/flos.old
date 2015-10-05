@@ -54,4 +54,6 @@ void init_modules() {
 
 
     kinfof("OK\n");
+
+    init_multiboot_modules();
 }

@@ -35,7 +35,6 @@ void init_pool() {
 
     list_add(&current->mmap_list, &__list_entry.__mmap);
 
-    //TODO: change this to KERNEL_POOL_START
     kernel_pool = tlsf_create_in_pool((void *)KERNEL_POOL_START,
                                       KERNEL_INITIAL_POOL_SZ);
 

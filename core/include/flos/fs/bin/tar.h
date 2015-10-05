@@ -11,4 +11,9 @@
 #ifndef __flos__FS_BIN_TAR_H__
 #    define __flos__FS_BIN_TAR_H__
 
+#    include <flos/types.h>
+#    include <tar.h>
+
+void tar_foreach_file(addr_t addr, int (*f) (struct tar_hdr *));
+
 #endif /* __flos__FS_BIN_TAR_H__ */

@@ -11,8 +11,11 @@
 #include <flos/types.h>
 #include <multiboot.h>
 #include <flos/kprintf.h>
+#include <flos/config.h>
 
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
+
+extern addr_t kernel_virt_end;
 
 struct multiboot_info *multiboot_info = NULL;
 u32 multiboot_magic = 0;
@@ -21,6 +24,7 @@ void dump_module_list() {
     if(CHECK_FLAG(multiboot_info->flags, 3)) {
         multiboot_module_t *mod;
         int i;
+        void *last_module_addr = NULL;
 
         kinfof("mods_count = %d, mods_addr = 0x%08x\n",
                multiboot_info->mods_count, multiboot_info->mods_addr);
@@ -29,7 +33,11 @@ void dump_module_list() {
             i < multiboot_info->mods_count; i++, mod++) {
             kinfof(" mod_start = 0x%x, mod_end = 0x%x, cmdline = %s\n",
                    mod->mod_start, mod->mod_end, mod->cmdline);
+            if(i == multiboot_info->mods_count - 1)
+                last_module_addr = (void *)mod->mod_end;
         }
+
+        kernel_virt_end = (addr_t) last_module_addr + KERNEL_VIRTUAL_BASE;
     }
 }
 

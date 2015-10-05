@@ -20,5 +20,6 @@ sources += \
 	arch/x86/mem/paging.c \
 	arch/x86/mem/pool.c \
 	arch/x86/module/init.c \
+	arch/x86/module/multiboot.c \
 	arch/x86/proc/sched.c \
 	arch/x86/proc/timer.c

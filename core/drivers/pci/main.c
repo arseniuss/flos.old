@@ -1,6 +1,6 @@
 /**
  * @file    drivers/pci/main.c
- * @brief   BPeripheral Component Interconnect driver
+ * @brief   Peripheral Component Interconnect driver
  * @version 1.0
  * @date    15.06.2015.
  *

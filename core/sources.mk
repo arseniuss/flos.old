@@ -15,6 +15,7 @@ include drivers/sources.mk
 sources +=  \
 	fs/bin/elf.c \
 	fs/bin/sym.c \
+	fs/bin/tar.c \
     lib/bits.c \
     lib/ctype.c \
     lib/string.c \

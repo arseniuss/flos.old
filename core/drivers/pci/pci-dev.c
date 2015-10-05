@@ -10,6 +10,7 @@
 
 #include <flos/types.h>
 #include <flos/kernel.h>
+#include <flos/kprintf.h>
 
 #include "pci.h"
 #include "pci-dev.h"
@@ -39,7 +40,7 @@ void pci_dev_create(struct pci_bus *pci_bus, u8 bus, u8 dev, u8 func) {
 }
 
 void pci_scan() {
-    struct pci_bus *pci_bus;
+    struct pci_bus *pci_bus = NULL;
 
     for(int bus = 0; bus < 256; bus++) {
         for(int dev = 0; dev < 32; dev++) {

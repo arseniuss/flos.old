@@ -41,6 +41,8 @@ void *early_kmalloc(size_t sz, int flags, ...) {
     if(early_pool_end == NULL) {
         early_pool_start = kernel_virt_end;
         early_pool_end = kernel_virt_end;
+        kdebugf("Initing early pool to %p - %p\n", early_pool_start,
+                early_pool_end);
     }
 
     ret = early_pool_end;

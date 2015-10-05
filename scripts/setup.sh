@@ -19,3 +19,4 @@ sudo apt-get install nasm
 sudo apt-get install bochs bochs-x bochs-sdl
 sudo apt-get install qemu qemu-kvm
 sudo apt-get install texinfo
+sudo apt-get install indent

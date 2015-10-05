@@ -44,6 +44,8 @@ int kmain() {
 
     init_idt();
 
+    init_multiboot();
+
     init_frames();
 
     init_memory_areas();
@@ -51,8 +53,6 @@ int kmain() {
     init_paging();
 
     init_pool();
-
-    init_multiboot();
 
     init_modules();
 

@@ -31,8 +31,8 @@ sudo mount -o loop,umask=000 floppy.img mnt/floppy
 echo "title flos operating system
         root (fd0)
         kernel /kernel
-        module /initrd" > mnt/floppy/boot/grub/menu.lst
+        module /initrd.tar" > mnt/floppy/boot/grub/menu.lst
 rm -f mnt/floppy/kernel
 cp kernel.x86.elf mnt/floppy/kernel
-cp initrd.tar mnt/floppy/initrd
+cp initrd.tar mnt/floppy/initrd.tar
 sudo umount mnt/floppy

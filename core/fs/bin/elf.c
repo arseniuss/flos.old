@@ -13,14 +13,19 @@
 #include <flos/types.h>
 #include <flos/vaargs.h>
 #include <flos/string.h>
+#include <flos/fs/bin/elf.h>
 #include <flos/fs/bin/sym.h>
+#include <flos/kprintf.h>
 
 #include <flos/debug/fs/bin/elf.h>
 
-enum ELF_GET_SECTION_BY {
-    EGSB_IDX,
-    EGSB_NAME
-};
+Elf32_Ehdr *elf_valid(addr_t addr) {
+    Elf32_Ehdr *hdr = (Elf32_Ehdr *) addr;
+
+    if(!strncmp((const char *)hdr->e_ident, ELFMAG, SELFMAG))
+        return hdr;
+    return NULL;
+}
 
 Elf32_Shdr *elf_get_section(Elf32_Ehdr * h, enum ELF_GET_SECTION_BY by, ...) {
     Elf32_Shdr *elf_section = (Elf32_Shdr *) (h->e_shoff + (u32) h);
@@ -44,8 +49,14 @@ Elf32_Shdr *elf_get_section(Elf32_Ehdr * h, enum ELF_GET_SECTION_BY by, ...) {
         {
             const char *name = va_arg(args, const char *);
 
+            kdebugf("section name =\"%s\"\n", name);
+
             for(int i = 0; i < h->e_shnum; i++) {
+                kdebugf("Checking \"%s\"\n", &elf_strtbl[elf_section->sh_name]);
+
                 if(!strcmp(name, &elf_strtbl[elf_section->sh_name])) {
+
+                    kdebugf("offset %d\n", elf_section->sh_offset);
                     if(elf_section->sh_offset < (u32) h) {
                         elf_section->sh_offset += (u32) h;
                     }
@@ -64,12 +75,13 @@ Elf32_Shdr *elf_get_section(Elf32_Ehdr * h, enum ELF_GET_SECTION_BY by, ...) {
 }
 
 const char *elf_lookup_str(Elf32_Ehdr * h, u32 idx) {
-    Elf32_Shdr *strtbl = elf_get_section(h, EGSB_NAME, ".strtab");
-    assert(strtbl);
+    Elf32_Shdr *elf_section = (Elf32_Shdr *) (h->e_shoff + (u32) h);
+    const char *elf_strtbl =
+        (const char *)(elf_section[h->e_shstrndx].sh_offset + (u32) h);
 
-    const char *str = (const char *)(strtbl->sh_offset + idx);
+    kdebugf("str %p\n", &elf_strtbl[idx]);
 
-    return str;
+    return &elf_strtbl[idx];
 }
 
 enum ELF_LOOKUP_SYMBOL_BY {

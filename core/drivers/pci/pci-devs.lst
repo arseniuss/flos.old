@@ -1,0 +1,3 @@
+# class subclass if description
+0x00 0x00 0x00 "Non-VGA-Compatible Device"
+0x00 0x01 0x00 "VGA-Compatible Device"
