@@ -38,6 +38,9 @@ extern struct list_head interrupt_handler[INTERRUPT_COUNT];
 void register_interrupt(int no, struct interrupt_handle *handle);
 void unregister_interrupt(int no, struct interrupt_handle *handle);
 
+void enable_interrupts();
+void disable_interrupts();
+
 int init_interrupts();
 
 #endif /* __flos__INTERRUPT_H__ */

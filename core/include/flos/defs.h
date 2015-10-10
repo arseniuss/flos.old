@@ -36,6 +36,9 @@
 #    define likely(x)               __builtin_expect(!!(x), 1)
 #    define unlikely(x)             __builtin_expect(!!(x), 0)
 
+#    define has_bit_flag(v, b)      ((v) & (0x1 << b))
+#    define has_flag(v, f)          ((v) & (f))
+
 #    ifdef __cplusplus
 #        define __linkage           extern "C"
 #    else

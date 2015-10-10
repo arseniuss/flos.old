@@ -13,20 +13,32 @@ include debug/sources.mk
 include drivers/sources.mk
 
 sources +=  \
-	fs/bin/elf.c \
-	fs/bin/sym.c \
-	fs/bin/tar.c \
+		fs/bin/elf.c \
+		fs/bin/sym.c \
+		fs/bin/tar.c \
+		fs/init.c \
     lib/bits.c \
     lib/ctype.c \
     lib/string.c \
+		lib/time.c \
     lib/vsprintf.c \
     mem/alloc.c \
     mem/frames.c \
     mem/tlsf.c \
-	module/if.c \
-	module/init.c \
+		module/if.c \
+		module/init.c \
     proc/interrupts.c \
-    proc/sched.c
+    proc/sched.c \
+		sys/chdir.c \
+		sys/close.c \
+		sys/create.c \
+		sys/open.c \
+		sys/read.c \
+		sys/remove.c \
+		sys/seek.c \
+		sys/write.c \
+		vfs/main.c \
+		vfs/ops.c
 
 ifneq (,$(findstring TEST,$(features)))
     include tests/sources.mk

@@ -1,5 +1,5 @@
 /**
- * @file    include/flos/types.h  
+ * @file    include/flos/types.h
  * @brief   Type definitions used in flos core
  * @version 1.0
  * @date    29.11.2014.
@@ -115,6 +115,8 @@ typedef signed long long s64;
 #    define bool    char               //< bool type
 #    define size_t  u32                //< size type
 #    define ssize_t s32                //< signed size type
+#    define off_t   s64                //< offset type
+#    define time_t  s64                //< time type
 
 /**
  * @typedef addr_t
