@@ -9,6 +9,7 @@
  */
 
 #include <flos/defs.h>
+#include <flos/types.h>
 
 void enable_interrupts(void) {
     __asm("sti;");
@@ -16,4 +17,12 @@ void enable_interrupts(void) {
 
 void disable_interrupts(void) {
     __asm("cli;");
+}
+
+void push_interrupts(volatile __unsigned * volatile buff) {
+  __asm("pushf; pop %0; cli; ":"=g"(*buff));
+}
+
+void pop_interrupts(volatile __unsigned * volatile buff) {
+  __asm("push %0; popf;": :"g"(*buff));
 }

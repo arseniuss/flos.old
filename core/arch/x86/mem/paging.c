@@ -138,7 +138,7 @@ int page_fault_handler(struct iregs *regs) {
     return INTERRUPT_NOT_HANDLED;
 }
 
-void init_paging() {
+void paging_init(void) {
     kprintf("Initing paging ... ");
 
     register_interrupt(PAGE_FAULT_INTERRUPT, &page_fault_handle);

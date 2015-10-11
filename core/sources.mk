@@ -28,6 +28,7 @@ sources +=  \
 		module/if.c \
 		module/init.c \
     proc/interrupts.c \
+		proc/process.c \
     proc/sched.c \
 		sys/chdir.c \
 		sys/close.c \

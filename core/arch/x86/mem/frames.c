@@ -22,7 +22,7 @@ size_t frame_sizes[FRAME_TYPE_COUNT] = {
     4 * 1024
 };
 
-void init_frames() {
+void frames_init(void) {
     //addr_t phys_addr;
     void *bitmap_memory;
 

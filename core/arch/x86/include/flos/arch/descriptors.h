@@ -146,20 +146,8 @@ static inline void flush_idt(struct seg_ptr *idt_ptr) {
   __asm("lidt %0"::"m"(*idt_ptr):"memory");
 }
 
-static inline void enable_interrupts() {
-    __asm("sti");
-}
-
-static inline void disable_interrupts() {
-    __asm("cli");
-}
-
-static inline void push_interrupts(volatile u32 * volatile buff) {
-  __asm("pushf; pop %0; cli; ":"=g"(*buff));
-}
-
-static inline void pop_interrupts(volatile u32 * volatile buff) {
-  __asm("push %0; popf;": :"g"(*buff));
+static inline void flush_gdt(struct seg_ptr *gdt_ptr) {
+  __asm("lgdt %0"::"m"(*gdt_ptr):"memory");
 }
 
 extern struct gate_desc kernel_idt[];

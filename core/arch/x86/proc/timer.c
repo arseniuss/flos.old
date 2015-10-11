@@ -23,7 +23,7 @@ int timer_interrupt_handler(struct iregs *regs) {
     return INTERRUPT_HANDLED;
 }
 
-int init_timer() {
+int timer_init(void) {
     kinfof("Initing timer ... ");
 
     pit_timer_phase(KERNEL_FREQ);

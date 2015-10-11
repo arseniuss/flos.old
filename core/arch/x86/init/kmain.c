@@ -8,17 +8,13 @@
  * @copyright see file LICENSE
  */
 
-#include <flos/arch/descriptors.h>
-#include <flos/defs.h>
-#include <flos/interrupt.h>
-#include <flos/kernel.h>
-#include <flos/mem/paging.h>
-#include <flos/mem/pool.h>
-#include <flos/string.h>
-#include <flos/module.h>
-#include <flos/arch/mem.h>
+#include <flos/arch/init.h>
+#include <flos/init.h>
 
-void init_multiboot();
+#include <flos/defs.h>
+#include <flos/vaargs.h>
+#include <flos/string.h>
+#include <flos/kprintf.h>
 
 void log_header(const char *fmt, ...) {
     char buf[MAX_CHAR_BUF_LEN];
@@ -40,21 +36,23 @@ int kmain() {
     log_header("Compiled @ %s %s\n", __DATE__, __TIME__);
     kinfof("============================================================\n");
 
-    init_interrupts();
+    interrupts_init();
 
-    init_idt();
+    idt_init();
 
-    init_multiboot();
+    multiboot_init();
 
-    init_frames();
+    frames_init();
 
-    init_memory_areas();
+    mem_area_init();
 
-    init_paging();
+    paging_init();
 
-    init_pool();
+    pool_init();
 
-    init_modules();
+    modules_init();
+
+    callgate_init();
 
     return 0;
 }

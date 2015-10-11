@@ -15,6 +15,7 @@
 #    include <flos/list.h>
 #    include <flos/module.h>
 #    include <flos/dev.h>
+#    include <flos/time.h>
 
 #    define X                               1
 #    define W                               2
@@ -53,9 +54,9 @@ struct fs_stat {
     u32 uid;
     u32 gid;
 
-    u32 ctime;
-    u32 mtime;
-    u32 atime;
+    time_t ctime;
+    time_t mtime;
+    time_t atime;
 };
 
 struct fs_node_ops {
@@ -86,9 +87,9 @@ struct fs_node {
     size_t block_size;
     size_t blocks;
 
-    u32 ctime;
-    u32 mtime;
-    u32 atime;
+    time_t ctime;
+    time_t mtime;
+    time_t atime;
 
     struct fs_root *root;
     struct fs_node_ops *ops;

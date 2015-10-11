@@ -116,7 +116,6 @@ typedef signed long long s64;
 #    define size_t  u32                //< size type
 #    define ssize_t s32                //< signed size type
 #    define off_t   s64                //< offset type
-#    define time_t  s64                //< time type
 
 /**
  * @typedef addr_t

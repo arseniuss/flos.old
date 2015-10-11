@@ -41,7 +41,7 @@ void dump_module_list() {
     }
 }
 
-void init_multiboot() {
+void multiboot_init(void) {
     if(!multiboot_info || multiboot_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
         kwarningf("Multiboot structure not found! (magic: %x)",
                   multiboot_magic);

@@ -60,7 +60,7 @@ char *exception_messages[] = {
     "Reserved"
 };
 
-int init_idt() {
+int idt_init(void) {
     kinfof("Initing interrupts ... ");
 
     pic_remap(IRQ_OFFSET_MASTER, IRQ_OFFSET_SLAVE);

@@ -15,7 +15,7 @@
 
 struct list_head interrupt_handler[INTERRUPT_COUNT];
 
-int init_interrupts() {
+int interrupts_init(void) {
     for(int i = 0; i < INTERRUPT_COUNT; ++i) {
         INIT_LIST_HEAD(&interrupt_handler[i]);
     }

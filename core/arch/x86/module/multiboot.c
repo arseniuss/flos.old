@@ -64,7 +64,7 @@ int dump_header(struct tar_hdr *hdr) {
     return 0;
 }
 
-void init_multiboot_modules() {
+void multiboot_module_init(void) {
     kinfof("Initing multiboot modules ...\n");
 
     if(HAS_FLAG(multiboot_info->flags, 3)) {

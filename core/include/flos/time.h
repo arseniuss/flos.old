@@ -11,6 +11,8 @@
 #ifndef __flos__TIME_H__
 #    define __flos__TIME_H__
 
+#    define time_t  s64                //< time type
+
 s64 get_unix_time(int year, int month, int day, int hour, int min, int sec);
 
 extern s64 timestamp;

@@ -10,8 +10,6 @@
 
 sources += \
 	arch/x86/init/entry.S \
-	arch/x86/init/idt.S \
-	arch/x86/init/idt.c \
 	arch/x86/init/kmain.c \
 	arch/x86/init/multiboot.c \
 	arch/x86/mem/alloc.c \
@@ -21,6 +19,10 @@ sources += \
 	arch/x86/mem/pool.c \
 	arch/x86/module/init.c \
 	arch/x86/module/multiboot.c \
+	arch/x86/proc/callgate.S \
+	arch/x86/proc/idt.c \
+	arch/x86/proc/idt.S \
 	arch/x86/proc/interrupt.c \
-	arch/x86/proc/sched.c \
+	arch/x86/proc/process.c \
+	arch/x86/proc/syscall.c \
 	arch/x86/proc/timer.c

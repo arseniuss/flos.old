@@ -65,7 +65,7 @@ struct memarea kernel_bss = {
     .ops = NULL
 };
 
-void init_memory_areas() {
+void mem_area_init(void) {
     struct memarea_list *node;
 
     INIT_LIST_HEAD(&current->mmap_list);

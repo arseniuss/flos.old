@@ -30,7 +30,7 @@ struct memarea_list __list_entry = {
     .__mmap = LIST_HEAD_INIT(__list_entry.__mmap)
 };
 
-void init_pool() {
+void pool_init(void) {
     kprintf("Initing memory pool ... ");
 
     list_add(&current->mmap_list, &__list_entry.__mmap);

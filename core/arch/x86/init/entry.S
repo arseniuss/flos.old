@@ -215,6 +215,9 @@ kernel_page_directory:
 .table2:
     times 1024 dd 0
 
+global kernel_gdt
+global kernel_gdt_ptr
+
 kernel_gdt:
 ; First Segment, null
     dw 0x0000   ;LowLimit
