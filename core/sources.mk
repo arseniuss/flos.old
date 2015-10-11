@@ -17,6 +17,7 @@ sources +=  \
 		fs/bin/sym.c \
 		fs/bin/tar.c \
 		fs/init.c \
+		init/kmain.c \
     lib/bits.c \
     lib/ctype.c \
     lib/string.c \

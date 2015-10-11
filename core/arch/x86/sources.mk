@@ -25,4 +25,5 @@ sources += \
 	arch/x86/proc/interrupt.c \
 	arch/x86/proc/process.c \
 	arch/x86/proc/syscall.c \
-	arch/x86/proc/timer.c
+	arch/x86/proc/timer.c \
+	arch/x86/proc/tss.c

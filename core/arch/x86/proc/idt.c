@@ -17,6 +17,7 @@
 #include <flos/list.h>
 #include <flos/string.h>
 #include <flos/types.h>
+#include <flos/init.h>
 
 struct seg_ptr idt_ptr;
 struct gate_desc idt_table[INTERRUPT_COUNT];
@@ -127,3 +128,5 @@ struct iregs *isr_handler(struct iregs *regs) {
 
     return regs;
 }
+
+KINIT(idt_init, "interrupts");

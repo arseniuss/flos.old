@@ -12,6 +12,7 @@
 #include <multiboot.h>
 #include <flos/kprintf.h>
 #include <flos/config.h>
+#include <flos/init.h>
 
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
 
@@ -41,11 +42,11 @@ void dump_module_list() {
     }
 }
 
-void multiboot_init(void) {
+int multiboot_init(void) {
     if(!multiboot_info || multiboot_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
         kwarningf("Multiboot structure not found! (magic: %x)",
                   multiboot_magic);
-        return;
+        return -1;
     }
 #ifdef __HIGHER_HALF__
     multiboot_info->mmap_addr += KERNEL_VIRTUAL_BASE;
@@ -63,4 +64,8 @@ void multiboot_init(void) {
     kdebugf("\tapm_table @ 0x%08x\n", multiboot_info->apm_table);
 
     dump_module_list();
+
+    return 0;
 }
+
+KINIT(multiboot_init);

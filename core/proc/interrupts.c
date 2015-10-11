@@ -12,6 +12,7 @@
 #include <flos/config.h>
 #include <flos/interrupt.h>
 #include <flos/assert.h>
+#include <flos/init.h>
 
 struct list_head interrupt_handler[INTERRUPT_COUNT];
 
@@ -33,3 +34,5 @@ void register_interrupt(int no, struct interrupt_handle *handle) {
 void unregister_interrupt(int no, struct interrupt_handle *handle) {
     list_del_init(&handle->ihandle_list);
 }
+
+KINIT(interrupts_init);

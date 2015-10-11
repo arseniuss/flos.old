@@ -57,6 +57,15 @@ SECTIONS {
         *(.gnu.linkonce.r*)
     }
 
+    /* kernel initialization table */
+    .kinit : AT(ADDR(.kinit) - KERNEL_VIRTUAL_BASE) {
+        __kernel_kinittbl_start__ = .;
+
+        *(SORT(.kinit*))
+
+        __kernel_kinittbl_end__ = .;
+    }
+
     /* kernel symbol table section */
     .ksym : AT(ADDR(.ksym) - KERNEL_VIRTUAL_BASE) {
 

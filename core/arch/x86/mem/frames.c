@@ -14,6 +14,7 @@
 #include <flos/mem/phys.h>
 #include <flos/bitmap.h>
 #include <flos/kprintf.h>
+#include <flos/init.h>
 
 #define BITMAP_BIT_COUNT    1024
 
@@ -22,7 +23,7 @@ size_t frame_sizes[FRAME_TYPE_COUNT] = {
     4 * 1024
 };
 
-void frames_init(void) {
+int frames_init(void) {
     //addr_t phys_addr;
     void *bitmap_memory;
 
@@ -48,4 +49,8 @@ void frames_init(void) {
     }
 
     kprintf("OK\n");
+
+    return 0;
 }
+
+KINIT(frames_init, "idt");

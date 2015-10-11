@@ -44,6 +44,4 @@ struct tss {
     u16 iomap_base;
 } __packed;
 
-void tss_init(void);
-
 #endif

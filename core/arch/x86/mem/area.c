@@ -15,6 +15,7 @@
 #include <flos/list.h>
 #include <flos/kernel.h>
 #include <flos/mem/phys.h>
+#include <flos/init.h>
 
 addr_t kernel_virt_start = (addr_t) & __kernel_virt_start__;
 addr_t kernel_virt_end = (addr_t) & __kernel_virt_end__;
@@ -65,7 +66,7 @@ struct memarea kernel_bss = {
     .ops = NULL
 };
 
-void mem_area_init(void) {
+int mem_area_init(void) {
     struct memarea_list *node;
 
     INIT_LIST_HEAD(&current->mmap_list);
@@ -93,4 +94,8 @@ void mem_area_init(void) {
     node = early_kmalloc(sizeof(struct memarea_list), 0);
     node->ma = &kernel_bss;
     list_add_tail(&node->__mmap, &current->mmap_list);
+
+    return 0;
 }
+
+KINIT(mem_area_init, "frames");

@@ -15,6 +15,7 @@
 #include <flos/types.h>
 #include <flos/mem/area.h>
 #include <flos/process.h>
+#include <flos/init.h>
 
 tlsf_t kernel_pool = NULL;
 
@@ -30,7 +31,7 @@ struct memarea_list __list_entry = {
     .__mmap = LIST_HEAD_INIT(__list_entry.__mmap)
 };
 
-void pool_init(void) {
+int pool_init(void) {
     kprintf("Initing memory pool ... ");
 
     list_add(&current->mmap_list, &__list_entry.__mmap);
@@ -39,4 +40,8 @@ void pool_init(void) {
                                       KERNEL_INITIAL_POOL_SZ);
 
     kprintf("OK\n");
+
+    return 0;
 }
+
+KINIT(pool_init, "paging");

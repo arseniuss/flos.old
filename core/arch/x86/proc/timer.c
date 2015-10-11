@@ -12,6 +12,7 @@
 #include <flos/config.h>
 #include <flos/kprintf.h>
 #include <flos/interrupt.h>
+#include <flos/init.h>
 
 int timer_interrupt_handler(struct iregs *regs);
 
@@ -34,3 +35,5 @@ int timer_init(void) {
 
     return 0;
 }
+
+KINIT(timer_init, "interrupts");

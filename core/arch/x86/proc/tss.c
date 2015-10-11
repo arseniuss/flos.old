@@ -10,9 +10,13 @@
 
 #include <flos/config.h>
 #include <flos/arch/descriptors.h>
+#include <flos/init.h>
+#include <flos/arch/tss.h>
 
 struct tss kernel_tss;
 
-void tss_init(void) {
-
+int tss_init(void) {
+    return 0;
 }
+
+KINIT(tss_init);

@@ -12,7 +12,7 @@
 #include <flos/module.h>
 #include <flos/kprintf.h>
 #include <flos/types.h>
-#include <flos/arch/init.h>
+#include <flos/init.h>
 
 extern char __kernel_modules_start__;
 extern char __kernel_modules_end__;
@@ -21,7 +21,7 @@ struct module **kernel_modules_start =
     (struct module **)&__kernel_modules_start__;
 struct module **kernel_modules_end = (struct module **)&__kernel_modules_end__;
 
-void modules_init(void) {
+int modules_init(void) {
     int module_count = 0;
     int modules_failed = 0;
     int modules_inited = 0;
@@ -53,8 +53,9 @@ void modules_init(void) {
     kdebugf("Inited %d modules\n", modules_inited);
     kdebugf("Failed %d modules\n", modules_failed);
 
-
     kinfof("OK\n");
 
-    multiboot_module_init();
+    return 0;
 }
+
+KINIT(modules_init);

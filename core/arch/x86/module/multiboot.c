@@ -16,6 +16,7 @@
 #include <flos/fs/bin/tar.h>
 #include <flos/fs/bin/elf.h>
 #include <flos/module.h>
+#include <flos/init.h>
 
 #define HAS_FLAG(flags, bit)       ((flags) & (1 << (bit)))
 #define strends(s1, s2)                                                        \
@@ -64,7 +65,7 @@ int dump_header(struct tar_hdr *hdr) {
     return 0;
 }
 
-void multiboot_module_init(void) {
+int multiboot_module_init(void) {
     kinfof("Initing multiboot modules ...\n");
 
     if(HAS_FLAG(multiboot_info->flags, 3)) {
@@ -89,4 +90,8 @@ void multiboot_module_init(void) {
     }
 
     kinfof("OK\n");
+
+    return 0;
 }
+
+KINIT(multiboot_module_init, "multiboot", "modules");

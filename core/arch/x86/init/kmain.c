@@ -36,23 +36,7 @@ int kmain() {
     log_header("Compiled @ %s %s\n", __DATE__, __TIME__);
     kinfof("============================================================\n");
 
-    interrupts_init();
-
-    idt_init();
-
-    multiboot_init();
-
-    frames_init();
-
-    mem_area_init();
-
-    paging_init();
-
-    pool_init();
-
-    modules_init();
-
-    callgate_init();
+    kernel_init();
 
     return 0;
 }

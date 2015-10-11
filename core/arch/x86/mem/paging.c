@@ -17,6 +17,7 @@
 #include <flos/mem/area.h>
 #include <flos/mem/phys.h>
 #include <flos/config.h>
+#include <flos/init.h>
 
 #define PAGE_SHIFT      12
 #define PAGE_SIZE       (1 << PAGE_SHIFT)
@@ -138,10 +139,14 @@ int page_fault_handler(struct iregs *regs) {
     return INTERRUPT_NOT_HANDLED;
 }
 
-void paging_init(void) {
+int paging_init(void) {
     kprintf("Initing paging ... ");
 
     register_interrupt(PAGE_FAULT_INTERRUPT, &page_fault_handle);
 
     kprintf("OK\n");
+
+    return 0;
 }
+
+KINIT(paging_init, "frames", "mem_area");

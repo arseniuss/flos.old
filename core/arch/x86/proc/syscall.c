@@ -11,6 +11,7 @@
 #include <flos/config.h>
 #include <flos/arch/descriptors.h>
 #include <flos/kprintf.h>
+#include <flos/init.h>
 
 struct gdt_callgate_entry_s {
     u16 offset_low;
@@ -45,7 +46,7 @@ int callgate_handler() {
     return 0;
 }
 
-void callgate_init(void) {
+int callgate_init(void) {
     struct gdt_callgate_entry_s *entry =
         (struct gdt_callgate_entry_s *)&kernel_gdt[GDT_SEGSYSCALL];
 
@@ -58,4 +59,8 @@ void callgate_init(void) {
     flush_gdt(&kernel_gdt_ptr);
 
     kinfof("Callgates inited!\n");
+
+    return 0;
 }
+
+KINIT(callgate_init);

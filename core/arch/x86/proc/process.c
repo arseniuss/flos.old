@@ -13,6 +13,7 @@
 #include <flos/process.h>
 #include <flos/mem/paging.h>
 #include <flos/sched.h>
+#include <flos/init.h>
 
 extern struct page_directory kernel_page_directory;
 
@@ -48,3 +49,5 @@ int process_init(void) {
 
     return 0;
 }
+
+KINIT(process_init, "tss");
