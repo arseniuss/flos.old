@@ -6,6 +6,8 @@ versions. This repository contains implementation of kernel and
 some libraries.
 I hope that I won't abandon this project like I did with old one (my bad).
 
+Update: And do I did - abandoned.
+
 ## Licenses ##
 
 _flos_ kernel is licensed under GNU GPL v3 __WITHOUT ANY WARRANTY__
