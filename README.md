@@ -6,6 +6,20 @@ versions. This repository contains implementation of kernel and
 some libraries.
 I hope that I won't abandon this project like I did with old one (my bad).
 
+Note from future:
+I did abandon this project since it reimplemented already used POSIX etc stuff.
+Currently I'm working on my own language (_cell_) compiler and experiementing
+with minimal libraries in Plan9 style.
+
+Despite being simplistic this project helped me get two jobs.
+
+Notable features:
+ - gcc-cc: automatic gcc compiler (not mine)
+ - static kernel page directory
+ - universal bitmap for unsed/unused pages (better code exists somewhere!)
+
+Have fun!
+ 
 ## Licenses ##
 
 _flos_ kernel is licensed under GNU GPL v3 __WITHOUT ANY WARRANTY__
